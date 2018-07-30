@@ -18,3 +18,13 @@ extend方法与mixin类似，它们的区别在于extend是将混入的所有属
 
 ### 克隆对象 ###
 clone：深复制
+
+
+
+# git操作 #
+参考链接：[廖雪峰git教程](https://www.liaoxuefeng.com/wiki/0013739516305929606dd18361248578c67b8067c8c017b000)
+## 修改后再提交 ##
+
+	git add ./
+	commit -m "xxx"
+	git push -u origin master
