@@ -23,9 +23,9 @@
         var baz = [1, 2, 3];
         var bop = [4, 5, 6, 5, 6, foo];
 
-        require([
+       /*  require([
             "dojo/_base/array"
-        ], function(array) {
+        ], function(array) { */
             // console.log(array.indexOf([foo, bar], baz));
             // console.log(array.indexOf(foo, 3));
             // console.log(array.indexOf(bar, 6, 2));
@@ -41,17 +41,17 @@
                 return x % 2 == 0
             });
             console.log(z); */
-            var  a = new Array(1,2,3,4,5);
+           /*  var  a = new Array(1,2,3,4,5);
             array.forEach("console.log(item)");
-        })
+        }) */
 
-        /* require([
+        require([
             "dojo/string",
             "dojo/dom",
             "dojo/domReady!"
         ], function(string, dom) {
             dom.byId("output").innerHTML = string.substitute(dom.byId("input").innerHTML, { replace: "foo", me: "bar"});
-        }) */
+        })
 
         /* function Dog(sound) {
             this.sound = sound;
