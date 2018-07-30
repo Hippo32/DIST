@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>dist day5 dojo/Deferred</title>
+    <script src="js/dojo/dojo.js" data-dojo-config="async:true"></script>
+</head>
+<body>
+    <!-- 使用JSONP从GitHub API请求Dojo pull请求 -->
+    <!-- <div id="pullrequests"></div>
+    <button id="pullrequestsButton">click</button> -->
+
+    <!-- 显示页面上文本文件的内容 -->
+    <!-- <div id="resultDiv"></div>
+    <button id="textButton">click</button> -->
+
+    <!-- <ul id="userlist">
+        <li>hh</li>
+    </ul> -->
+    <script>
+        // 使用dojo/request/notify监视请求的进度
+        
+
+        // 使用JSONP从GitHub API请求Dojo pull请求
+        /* require([
+            "dojo/dom",
+            "dojo/on",
+            "dojo/request/script", // JSONP
+            "dojo/dom-construct",
+            "dojo/_base/array",
+            "dojo/domReady!"
+        ], function(dom, on, script, domConstruct, arrayUtil) {
+            var pullsNode = dom.byId("pullrequests");
+
+            on(dom.byId("pullrequestsButton"), "click", function(evt) {
+                script.get("https://api.github.com/repos/dojo/dojo/pulls", {
+                    jsonp: "callback"
+                }).then(function(response) {
+                    domConstruct.empty(pullsNode);
+                    var fragment = document.createDocumentFragment();
+                    arrayUtil.forEach(response.data, function(pull) {
+                        var li = domConstruct.create("li", {}, fragment);
+                        var link = domConstruct.create("a", {href: pull.url, innerHTML: pull.title}, li);
+                        console.log(pull);
+                    });
+                    domConstruct.place(fragment,pullsNode);
+                    console.log(response);
+                });
+            });
+        }); */
+
+        // 显示页面上文本文件的内容
+        /* require(["dojo/dom", "dojo/on", "dojo/request", "dojo/domReady!"], 
+            function(dom, on, request) {
+                var resultDiv = dom.byId("resultDiv");
+                on(dom.byId("textButton"), "click", function(evt) {
+                    request.get("helloworld.txt").then(
+                        function(response) {
+                            resultDiv.innerHTML = "<pre>" + response + "</pre>";
+                        },
+                        function(error) {
+                            resultDiv.innerHTML = "<div class=\"error\">" + error + "</div>";
+                        }
+                    );
+                });
+            }
+        );
+ */
+        // dojo/request
+        /* require(["dojo/request"], function(request) {
+            request("helloworld.txt").then(
+                function(text){
+                    console.log("The file`s content is: " + text);
+                },
+                function(error) {
+                    console.log("An error occured: " + error);
+                }
+            );
+        }); */
+
+        // deferred中的链接
+        /* require([
+            "dojo/request",
+            "dojo/_base/array",
+            "dojo/json",
+            "dojo/dom-construct",
+            "dojo/dom",
+            "dojo/domReady!"
+        ], function(request, arrayUtil, JSON, domConstruct, dom) {
+            var original = request.get("users-manaled.json", {
+                handleAs: "json"
+            });
+
+            var result = original.then(function(res) {
+                var userlist = dom.byId("userlist1");
+                return arrayUtil.map(res, function(user) {
+                    domConstruct.create("li", {
+                        innerHTML: JSON.stringify(user)
+                    }, userlist);
+
+                    return {
+                        id: user[0],
+                        username: user[1],
+                        name: user[2]
+                    };
+                });
+            });
+
+            result.then(function(objs) {
+                var userlist = dom.byId("userlist2");
+                arrayUtil.forEach(objs, function(user) {
+                    domConstruct.create("li", {
+                        innerHTML: JSON.stringify(user)
+                    }, userlist);
+                });
+            });
+        }); */
+
+        // 关于deferred的第一个例子
+        /* require([
+            "dojo/Deferred",
+            "dojo/request",
+            "dojo/_base/array",
+            "dojo/dom-construct",
+            "dojo/dom",
+            "dojo/domReady!"
+        ], function(Deferred, request, arrayUtil, domConstruct, dom) {
+            // 实例化一个deferred
+            var deferred = new Deferred(),
+                userlist = dom.byId("userlist");
+
+            // deferred的回调函数和出错是调用的函数
+            deferred.then(function(res) {
+                arrayUtil.forEach(res, function(user) {
+                    domConstruct.create("li", {
+                        id: user.id,
+                        innerHTML: user.username + ": " + user.name
+                    }, userlist);
+                });
+            }, function(err) {
+                domConstruct.create("li", {
+                    innerHTML: "Error:" + err
+                }, userlist);
+            });
+
+            // 发送HTTP请求
+            request.get("users.json", {
+                handleAs: "json"
+            }).then (
+                function(response) {
+                    deferred.resolve(response);
+                },
+                function(error) {
+                    deferred.reject(error);
+                }
+            )
+        }) */
+    </script>
+</body>
+</html>

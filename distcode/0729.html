@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>0729</title>
+    <script src="js/dojo/dojo.js" data-dojo-config="async:true"></script>
+</head>
+<body>
+    <!-- <button id="fadeOutButton">Fade block out</button>
+    <button id="fadeInButton">Fade block in</button>
+
+    <div id="fadeTarget" class="red-block">
+        A red block
+    </div> -->
+
+    <div id="input">${replace} has the hots for ${me}</div>
+    <div id="output"></div>
+    <script>
+        var foo = [1, 2, 3];
+        var bar = [4, 5, 6, 5, 6];
+        var baz = [1, 2, 3];
+        var bop = [4, 5, 6, 5, 6, foo];
+
+        require([
+            "dojo/_base/array"
+        ], function(array) {
+            // console.log(array.indexOf([foo, bar], baz));
+            // console.log(array.indexOf(foo, 3));
+            // console.log(array.indexOf(bar, 6, 2));
+            // console.log(array.indexOf(bop, foo));
+            // console.log(array.indexOf(bop, [1, 2, 3]));
+            /* console.log(array.some([3, 5, 7, 8], function(x) {
+                return x % 2 == 0
+            })); */
+            /* array.forEach([1, 2, 3], function(x) {
+                console.log(x);
+            }) */
+            /* var z = array.filter([2,3,4], function(x) {
+                return x % 2 == 0
+            });
+            console.log(z); */
+            var  a = new Array(1,2,3,4,5);
+            array.forEach("console.log(item)");
+        })
+
+        /* require([
+            "dojo/string",
+            "dojo/dom",
+            "dojo/domReady!"
+        ], function(string, dom) {
+            dom.byId("output").innerHTML = string.substitute(dom.byId("input").innerHTML, { replace: "foo", me: "bar"});
+        }) */
+
+        /* function Dog(sound) {
+            this.sound = sound;
+        }
+        Dog.prototype.talk = function(name) {
+            console.log(this.sound + "," + this.sound + ".My name is", name);
+        }
+        dog = new Dog("woof");
+        dog.talk("fido");
+
+        function Cat(sound) {
+            this.sound = sound;
+        }
+        Cat.prototype.talk = function(name) {
+            console.log(this.sound + "," + this.sound + ".My name is", name);
+        }
+        cat = new Cat("meow");
+        cat.talk("felix");
+        cat.talk.call(dog, "felix"); */
+
+        //JS权威指南关于闭包的例子
+        /* var scope = "global scope";
+        function checkscope() {
+            var scope = "local scope";
+            function f() { console.log(scope); }
+            return f;
+        }
+        checkscope()() */
+
+        // dojo权威指南例P-1:最小的闭包结构
+        /* function foo(){
+            var x = 10;
+            return function bar() {
+                console.log(x);
+            }
+        }
+
+        var x = 5;
+        var barReference = foo();
+        barReference(); // 10 */
+
+        /* require([
+            "dojo/_base/fx",
+            "dojo/on",
+            "dojo/dom",
+            "dojo/dommReady!"
+        ], function (fx, on, dom) { 
+            var fadeOutButton = dom.byId("fadeOutButton"),
+                fadeInButton = dom.byId("fadeInButton"),
+                fadeTarget = dom.byId("fadeTarget");
+            on(fadeOutButton, "click", function(evt) {
+                fx.fadeOut({ node: fadeTarget }).play();
+            });
+            on(fadeInButton, "click", function(evt) {
+                fx.fadeIn({ node: fadeTarget }).play();
+            });
+         }); */
+    </script>
+</body>
+</html>

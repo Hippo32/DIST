@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>数慧第四天和第五天代码</title>
+    <script src="dojo/dojo.js" data-dojo-config="async: true"></script>
+</head>
+<body>
+    <script>
+        // getInherited()不适用情况
+        require(["dojo/_base/declare"], function(declare){
+            var A = declare(null, {
+                m1: function(){
+                // ...
+                },
+                m2: function(){
+                // ...
+                }
+            });
+
+            var B = declare(A, {
+                logAndCall: function(name, method, args){
+                console.log("Calling " + name + "...");
+                method.apply(this, args);
+                console.log("...done");
+                },
+                m1: function(){
+                var supermethod = this.getInherited(arguments);
+                this.logAndCall("A.m1", supermethod, [1, 2]);
+                }
+            });
+
+            var x = new B();
+            x.m2 = function(){
+                // we need to use a name here because
+                // this method was not properly annotated:
+                var supermethod = this.getInherited("m2", arguments);
+                this.logAndCall("A.m2", supermethod, [1, 2]);
+            };
+        });
+
+        /* 
+         *        
+         *  这段代码不理解
+         *
+         */
+        // inherited() 
+        /* require([
+            "dojo/_base/lang",
+            "dojo/_base/declare"
+        ], function(lang, declare) {
+            var A = declare(null, {
+                m1: function() {
+                    console.log("I am m1")
+                },
+                m2: function() {
+                    console.log("I am m2")
+                },
+                m3: function() {
+                    console.log("I am m3")
+                },
+                m4: function() {
+                    console.log("I am m4")
+                },
+                m5: function() {
+                    console.log("I am m5")
+                }
+            });
+            var B = declare(A, {
+                m1: function() {
+                    this.inherited(arguments);
+                    this.inherited(arguments, [1, 2, 3]);
+                }
+            });
+
+            B.extend({
+                m2: function() {
+                    this.inherited(arguments);
+                    this.inherited(arguments,["a"]);
+                }
+            });
+
+            lang.extend(B, {
+                m3: function() {
+                    this.inherited("m3", arguments);
+                    this.inherited("m3", arguments, ["a"]);
+                }
+            });
+
+            var x = new B();
+            x.m1();
+            x.m2();
+            x.m3();
+            x.m4();
+            x.m5();
+
+            declare.safeMixin(x, {
+                m4: function() {
+                    this.inherited(arguments);
+                    this.inherited(arguments, ["a"]);
+                }
+            });
+
+            x.m5 = function() {
+                this.inherited("m5", arguments);
+                this.inherited("m5", arguments, ["a"]);
+            };
+
+            x.m4();
+            x.m5();
+        }) */
+
+        // createSubclass()
+        /* require([
+            "dojo/_base/declare"
+        ], function(declare) {
+            var A = declare(null, {
+                m1: function () {},
+                s1: "bar"
+            });
+
+            var B = declare(null, {
+                m2: function() {},
+                s2: "foo"
+            });
+
+            var C = declare(null, {});
+
+            var D1 = A.createSubclass([B, C], {
+                m1: function() {},
+                d1: 42
+            });
+            var d1 = new D1();
+            console.log(d1);
+        }); */
+
+        // extend()和mixin
+       /*  require([
+            "dojo/_base/declare"
+        ], function(declare) {
+            var A = declare(null, {
+                m1: function() {
+                    console.log("A org");
+                },
+                m2: function () { 
+                    console.log("A org");
+                 }
+            });
+
+            var B = declare(null, {
+                m2: function() {
+                    this.inherited(arguments);
+                    console.log("B org");
+                },
+                m3: function() {
+                    this.inherited(arguments);
+                    console.log("B org");
+                }
+            });
+
+            var C = declare(null, {
+                m3: function() {
+                    this.inherited(arguments);
+                    console.log("C org");
+                },
+                m4: function () { 
+                    this.inherited(arguments);
+                    console.log("C org");
+                 }
+            });
+
+            var ABC = declare([A, B, C], {});
+
+            var abc = new ABC();
+
+            console.log(abc instanceof A);
+            console.log(abc instanceof B);
+            console.log(abc instanceof C);
+
+            abc.m1();
+            abc.m2();
+            abc.m3();
+            abc.m4();
+
+            A.extend({
+                m1: function() {
+                    console.log("A new");
+                },
+                m2: function() {
+                    console.log("A new");
+                }
+            });
+
+            B.extend({
+                m2: function() {
+                    console.log("B new");
+                },
+                m3: function() {
+                    console.log("B new");
+                }
+            });
+
+            C.extend({
+                m3: function() {
+                    console.log("C new");
+                },
+                m4: function() {
+                    console.log("C new");
+                }
+            });
+
+            abc.m1();
+            abc.m2();
+            abc.m3();
+            abc.m4();
+        }) */
+
+        // exend()
+        /* require([
+            "dojo/_base/declare"
+        ], function(declare) {
+            var A = declare(null, {
+                m1: function() {
+                    console.log("I am original method");
+                }
+            });
+            A.extend({
+                m1: function(){
+                    // 会替代原始的方法
+                    console.log("I am replaced");
+                },
+                m2: function () { 
+                    console.log("I am m2");
+                 }
+            });
+
+            var x = new A();
+            x.m1();
+            x.m2();
+        }) */
+
+        // 手动构造函数链接
+        /* require([
+            "dojo/_base/declare"
+        ], function(declare) {
+            var A = declare(null, {
+                constructor: function() {
+                    console.log("A");
+                }
+            });
+
+            var B = declare(A, {
+                "-chains-": {
+                    constructor: "manual"
+                },
+                constructor: function() {
+                    console.log("B");
+                }
+            });
+
+            var C = declare(B, {
+                constructor: function() {
+                    console.log("C - 1");
+                    this.inherited(arguments);
+                    console.log("C - 2");
+                }
+            });
+
+            var x = new C();
+        }) */
+
+        // 构造函数关于after特性
+        /* require([
+            "dojo/_base/declare"
+        ], function (declare) { 
+            var A = declare(null, {
+                constructor: function() {
+                    console.log("A");
+                }
+            });
+
+            var B = declare(A, {
+                constructor: function() {
+                    console.log("B");
+                }
+            });
+
+            var C = declare(B, {
+                constructor: function() {
+                    console.log("C");
+                }
+            });
+
+            new C();
+         }) */
+
+        // 链接
+        /* require([
+            "dojo/_base/declare",
+            "dojo/dom-construct",
+            "dojo/_base/window"
+        ], function(declare, domConst, win) {
+            var A = declare(null, {
+                "-chains-": {
+                    init: "after",
+                    destroy: "before"
+                },
+
+                init: function(token) {
+                    this.initialized = true;
+                    this.token = token;
+                    this.node = domConst.create("div", null, win.body());
+                    console.log("A.init");
+                },
+
+                destroy: function() {
+                    domConst.destroy(this.node);
+                    this.node = null;
+                    console.log("A.destroy");
+                }
+            });
+
+            var B = declare(A, {
+                init: function(token) {
+                    console.log("B.init");
+                },
+
+                destroy: function() {
+                    console.log("B.destroy");
+                }
+            });
+
+            var x = new B();
+            x.init(42);
+            x.destroy();
+        }); */
+
+        // 多重继承
+        /* require(["JS/demo/person"], function(Blizzard){
+            var yummyTreat = new Blizzard();
+        }); */
+
+
+        // 使用mixin
+        /* require([
+            "JS/demo/person"
+        ], function (person) { 
+            var anon = new person(),
+                alice = new person({ name: "Alice", age: 42, residence: "universe B" });
+            console.log(anon.name, alice.name);
+         }) */
+
+        // 使用mixin()
+
+        // 最简单的创建类
+      /*   require([
+            "JS/demo/person"
+        ], function(person) {
+            var folk  = new person("phiggine", 42, "Thnnessee");
+            console.log(folk.name);
+            console.log(folk.age);
+        }); */
+
+        // this.inherited
+        /* require([
+            "JS/demo/person"
+        ], function (Person) { 
+            var p = new Person();
+            p.myMethod();
+         }); */
+
+        
+
+        // 基本类创建和继承
+        /* define([
+            "dojo/_base/declare",
+            "dijit/form/Button"
+        ], function(declare, Button) {
+            return declare("mynamespace.Button", Button,{
+                label: "My Button",
+                onClick: function(evt) {
+                    console.log("I was clicked");
+                    this.inherited(arguments);
+                }
+            });
+        }); */
+
+        // lang.hitch
+        /* require([
+            "dojo/_base/lang"
+        ], function(lang) {
+            var  a = {
+                nodeType: "a",
+                f: function() {
+                    console.log(this.nodeType);
+                }
+            };
+            var nodeType = "b";
+            lang.hitch(a,a.f());
+            
+        }) */
+
+        // lang.getObject
+        /* require([
+            "dojo/_base/lang"
+        ], function(lang) {
+            var a = {
+                aa: {
+                    aaa: {
+                        aaaa: "aaaabbbb"
+                    }
+                }
+            };
+
+            console.log(lang.getObject('aa.aaa', false, a));
+            console.log(lang.getObject('aa.bb', true, a));
+            console.log(lang.getObject('aa.bb.ccc.toString', true, a));
+            console.log(lang.getObject("aa.aaa.aaaa.c", false, a));
+            console.log(lang.getObject('aa.aaa.aaaa.c', true, a));
+        }) */
+
+
+        // lang.mixin
+        /* require([
+            "dojo/_base/lang",
+            "dojo/domReady!"
+        ], function(lang) {
+            var flattend = lang.mixin({
+                name: "Frylock",
+                braces: true
+            }, {
+                name: "Carl Brutannaandsf"
+            });
+
+            console.log(flattend.name);
+            console.log(flattend.braces);
+        }) */
+    </script>
+</body>
+</html>
