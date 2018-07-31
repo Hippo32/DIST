@@ -1,5 +1,5 @@
-# 数慧day6 #
-2018/7/30 8:54:25 
+# 关于Promise #
+2018/7/30 and 2018/7/31
 
 目标：
 
@@ -97,15 +97,71 @@ Promise的执行器会立即执行，早于源代码中在其之后的任何代�
 	- 接收的参数参数是拒绝原因（常常是一个错误对象）以及已被拒绝的Promise。
 - `rejectionHandled`：若一个Promise被拒绝、并在事件循环的一个轮次之后再有拒绝处理函数被调用，该事件就会被触发。
 	- 只有一个参数，即已被拒绝的Promise
+
+为了正确追踪潜在的未被处理的拒绝，使用`rejectionHandled`与`unhandleRejection`事件就能保持包含这些Promise的一个列表，之后等待一段时间再检查此列表。
 ### 浏览器的拒绝处理 ###
+浏览器同样能触发两个事件，来帮助识别为处理的拒绝。这两个事件会被`window`对象触发，并完全等效于Node.js的相关事件：
+
+- `unhandledrejection`：当一个Promise被拒绝、而在事件循环的一个轮次中没有任何拒绝处理函数被调用，该事件就会被触发；
+- `rejectionHandled`：若一个Promise被拒绝、并在事件循环的一个轮次之后再有拒绝处理函数被调用，该事件就会被触发。
+
+浏览器事件的处理函数只会接收到包含下列属性的一个对象：
+
+- `type`：事件的名称（`"unhandledrejection"`或`"rejectionhandled"`）；
+- `promise`：被拒绝的Promise对象；
+- `reason`：Promise中的拒绝值（拒绝原因）。
+
+浏览器的实现中国存在的另一个差异就是：拒绝之（reason）在两种事件中都可用。
 ## 串联Promise ##
+每次对`then()`或`catch()`的调用实际上创建并返回了另一个Promise，仅当前一个Promise被完成或拒绝时，后一个Promise才会被决议。
+### 捕获错误 ###
+Promise链允许你捕获前一个Promise的完成或拒绝处理函数中发生的错误。
+
+为了确保能正确处理任意可能发生的错误，应当始终在Promise链尾部添加拒绝处理函数。
+### 在Promise链中返回值 ###
+Promise链能从一个Promise传递数据给下一个Promise。传递给执行器中的`resolve()`处理函数的参数，会被传递给对应Promise的完成处理函数。可以指定完成处理函数的返回值，以便沿着一个链继续传递数据。
+
+拒绝处理函数同样能返回一个只用于完成下一个Promise。
+### 在Promise链中返回Promise ###
+从完成或拒绝处理函数中返回thenable，不会对Promise执行器何时被执行有所改变。第一个被定义的Promise将会首先运行它的执行器，接下来才轮到哦第二个Promise的执行器执行。返回thenable只是让你能在Promise结果之外定义附加响应。
+
+若你想等待前面的Promise被解决，之后才去触发另一个Promise，可以通过在完成处理函数中创建一个新的Promise，来推迟完成处理函数的执行。
 ## 响应多个Promise ##
+### Promise.all()方法 ###
+接收单个可迭代对象（如数组）作为参数，并返回一个Promise。这个可迭代对象的元素都是Promise，只有在它们都完成后，所返回的Promise才会被完成。
+
+若传递给`Promise.all()`的任意Promise被拒绝了，那么方法所返回的Promise就会立刻被拒绝，而不必等待其他的Promise结束
+
+拒绝处理函数总会接收到单个值，而不是一个数组，该值就是被拒绝的Promise所返回的拒绝值。
+### Promise.race()方法 ###
+提供了监视多个Promise的一个稍微不同的方法。此方法也接受一个包含需监视的Promise的可迭代对象，并返回一个新的Promise，但一旦来源Promise中有一个被解决，所返回的Promise就会立刻被解决。
 ## 继承Promise ##
-## 异步任务运行 ##
-## 总结 ##
+可将一个Promise用作派生类的基类。这允许你自定义变异的Promise，在内置Promise的基础上扩展功能。
 
+例子：
 
+    class MyPromise extends Promise {
+        // 使用默认构造器
+        success(resolve, reject) {
+            return this.then(resolve, reject);
+        }
 
+        failure(reject) {
+            return this.catch(reject);
+        }
+    }
+    let promise = new MyPromise(function(resolve, reject) {
+        resolve(42);
+    });
+    promise.success(function(value) {
+        console.log(value);
+    }).failure(function(value) {
+        console.log(value);
+    });
+
+由于静态方法被继承了，`MyPromise.resolve()`方法、`MyPromise.reject()`方法、`MyPromise.race()`方法与`MyPromise.all()`方法在派生的Promise上都可用。后两个方法的行为等同于内置的方法，但前两个方法则有轻微的不同。
+
+`MyPromise.resolve()`与`MyPromise.reject()`都会返回`MyPromise`的一个实例，无视传递进来的值的类型，这是由于这两个方法使用了`Symbol.species`属性来决定需要返回的Promise的类型。若传递内置Promise给这两个方法，将会被决议或被拒绝，并且会返回一个新的`MyPromise`，以便绑定完成或拒绝处理函数。
 
 
 # git操作 #

@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>0731</title>
+    <script src="js/dojo/dojo.js"></script>
+</head>
+<body>
+    <div id="resultDiv"></div>
+    <script>
+        require(["dojo/dom", "dojo/request", "dojo/json",
+        "dojo/_base/array", "dojo/domReady!"],
+            function(dom, request, JSON, arrayUtil){
+                // Results will be displayed in resultDiv
+                var resultDiv = dom.byId("resultDiv");
+
+                // Request the JSON data from the server
+                request.get("hello.json", {
+                    // Parse data from JSON to a JavaScript object
+                    handleAs: "json"
+                }).then(function(data){
+                    // Display the data sent from the server
+                    var html = "<h2>JSON Data</h2>" +
+                        "<p>JSON encoded data:</p>" +
+                        "<p><code>" + JSON.stringify(data) + "</code></p>"+
+                        "<h3>Accessing the JSON data</h3>" +
+                        "<p><strong>title</strong> " + data.title + "</p>" +
+                        "<p><strong>items</strong> An array of items." +
+                        "Each item has a name and a value.  The type of " +
+                        "the value is shown in parentheses.</p><dl>";
+
+                    arrayUtil.forEach(data.items, function(item,i){
+                        html += "<dt>" + item.name +
+                            "</dt><dd>" + item.value +
+                            " (" + (typeof item.value) + ")</dd>";
+                    });
+                    html += "</dl>";
+
+                    resultDiv.innerHTML = html;
+                },
+                function(error){
+                    // Display the error returned
+                    resultDiv.innerHTML = error;
+                });
+            }
+        );
+
+
+        //dojo/Deferred
+        /* require([
+            "dojo/request",
+            "dojo/_base/array",
+            "dojo/dom-construct",
+            "dojo/domReady!"
+        ], function(request, arrayUtil, domConstruce, dom) {
+            var deferred = request.get("users.json", {
+                handleAs: "json"
+            });
+            deferred.then(function(res) {
+                var userlist = dom.byId
+            })
+        }) */
+
+        // 继承Promise
+        /* class MyPromise extends Promise {
+            // 使用默认构造器
+            success(resolve, reject) {
+                return this.then(resolve, reject);
+            }
+
+            failure(reject) {
+                return this.catch(reject);
+            }
+        } */
+        /* let promise = new MyPromise(function(resolve, reject) {
+            resolve(42);
+        });
+        promise.success(function(value) {
+            console.log(value);
+        }).failure(function(value) {
+            console.log(value);
+        }); */
+
+        // 继承Promise传递内置Promise
+        /* let p1 = new Promise(function(resolve, reject) {
+            resolve(42);
+        });
+        let p2 = MyPromise.resolve(p1);
+        p2.success(function(value) {
+            console.log(value);
+        });
+        console.log(p2 instanceof MyPromise); */
+
+        // Promise.race() reject()
+        /* let p1 = new Promise(function(resolve, reject) {
+            resolve(42);
+        });
+        let p2 = Promise.reject(43);
+        let p3 = new Promise(function(resolve, reject) {
+            resolve(44);
+        });
+        let p4 = Promise.race([p1, p2, p3]);
+        p4.catch(function(value) {
+            console.log(value);
+        }) */
+
+        // Promise.race()
+        /* let p1 = Promise.resolve(42);
+        let p2 = new Promise(function(resolve, reject) {
+            resolve(43);
+        });
+        let p3 = new Promise(function(resolve, reject) {
+            resolve(44);
+        });
+        let p4 = Promise.race([p1, p2, p3]);
+        p4.then(function(value) {
+            console.log(value);
+        }) */
+
+        // Promise.all() 任意Promise被拒绝
+        /* let p1 = new Promise(function(resolve, reject) {
+            resolve(42);
+        });
+        let p2 = new Promise(function(resolve, reject) {
+            reject(43);
+        });
+        let p3 = new Promise(function(resolve, reject) {
+            reject(44);
+        });
+        let p4 = Promise.all([p1, p2, p3]);
+        p4.catch(function(value) {
+            console.log(Array.isArray(value)) // false
+            console.log(value); // 43
+        })
+ */
+        // Promise.all()
+        /* let p1 = new Promise(function(resolve, reject) {
+            resolve(42);
+        });
+        let p2 = new Promise(function (resolve, reject) { 
+            resolve(43);
+         });
+         let p3 = new Promise(function(resolve, reject) {
+             resolve(44);
+         });
+         let p4 = Promise.all([p1, p2, p3]);
+         p4.then(function(value) {
+             console.log(Array.isArray(value));
+             console.log(value[0]);
+             console.log(value[1]);
+             console.log(value[2]);
+         }) */
+        
+        // 在完成处理函数中创建一个新的Promise，来推迟完成处理函数的执行
+        /* let p1 = new Promise(function(resolve, reject) {
+            resolve(42);
+        });
+        p1.then(function(value) {
+            console.log(value);
+
+            let p2 = new Promise(function(resolve, reject) {
+                resolve(43);
+            });
+            return p2
+        }).then(function(value) {
+            console.log(value);
+        }) */
+        
+        // 在Promise链中返回Promise
+        /* let p1 = new Promise(function(resolve, reject) {
+            resolve(42);
+        });
+        let p2 = new Promise(function (resolve, reject) { 
+            reject(43);
+         });
+         p1.then(function(value) {
+             console.log(value);
+             return p2;
+         }).then(null, function(value) {
+             console.log(value);
+         }); */
+
+        // 在Promise链中返回Promise
+        /* let p1 = new Promise(function(resolve, reject) {
+            resolve(42);
+        });
+        let p2 = new Promise(function(resolve, reject) {
+            resolve(43);
+        });
+        p1.then(function(value) {
+            console.log(value);
+            return p2;
+        }).then(function(value) {
+            console.log(value);
+        }) */
+
+        // 完成处理函数返回值传给下一个Promise
+        /* let p1 = new Promise(function(resolve, reject) {
+            resolve(42);
+        });
+        p1.then(function(value) {
+            console.log(value);
+            return value + 1;
+        }).then(function(value) {
+            console.log(value);
+        }) */
+
+        // 捕获错误 拒绝处理函数抛出错误
+        /* let p1 = new Promise(function(resolve, reject) {
+            throw new Error("Explosion!");
+        });
+        p1.catch(function(error) {
+            console.log(error.message);
+            throw new Error("Boom!");
+        }).catch(function(error) {
+            console.log(error.message);
+        }); */
+
+        // 捕获错误 完成处理函数抛出错误
+        /* let p1 = new Promise(function(resolve, reject) {
+            resolve(42);
+        });
+        p1.then(function(value) {
+            throw new Error("Boom!");
+        }).catch(function(error) {
+            console.log(error.message);
+        }); */
+
+        // 串联Promise
+        /* let p1 = new Promise(function(resolve, reject) {
+            resolve(42);
+        });
+
+        p1.then(function(value) {
+            console.log(value);
+        }).then(function() {
+            console.log("Finished");
+        }); */
+
+        // 在浏览器中追踪未被处理的拒绝
+        /* let possiblyUnhandledRejections = new Map();
+
+        // 当一个拒绝未被处理，将其添加到map
+        window.onunhandledrejection = function(event) {
+            possiblyUnhandledRejections.set(event.promise, event.reason);
+        };
+
+        window.onrejectionhandled = function(event) {
+            possiblyUnhandledRejections.delete(event.promise);
+        };
+
+        setInterval(function() {
+            possiblyUnhandledRejections.forEach(function (reason, promise) { 
+                console.log(reason.message ? reason.message : reason);
+                handledRejection(promise, reason);
+             });
+             possiblyUnhandledRejections.clear();
+        }, 60000); */
+
+        /* let rejected;
+
+        window.onunhandledrejection = function(event) {
+            console.log(event.type); // unhandledrejection
+            console.log(event.reason.message); // Explosion!
+            console.log(rejected === event.promise); // true
+            console.log(event);
+        }; */
+
+        /* 
+         *
+         * 这一段没有console？很奇怪
+         * 
+         */
+        /* window.onrejectionhandled = function(event) {
+            console.log(event.type);
+            console.log(event.reason.message);
+            console.log(rejected === event.promise);
+        };
+        rejected = Promise.reject(new Error("Explosion!")); */
+    </script>
+</body>
+</html>
