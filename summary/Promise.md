@@ -1,12 +1,12 @@
-# 关于Promise #
-2018/7/30 and 2018/7/31
+# 关于Promise、异步和事件循环 #
+2018/7/30 and 2018/7/31 and 2018/8/1
 
 目标：
 
 - 理解Promise与异步编程
 - 学习Deferred
 
-在Dojo术语中，把可重用的代码块称为资源，把由资源组织而成的代码集合称为模块。
+promise可以使异步看起来如同步般清新易读，从而从回调地狱这种解脱出来。在未支持的浏览器中通过polyfill模拟实现。
 
 # Promise与异步编程 #
 一个Promise指定一些稍后要执行的代码（就像事件与回调函数一样），并且也明确标示了作业的代码是否执行成功。
@@ -162,6 +162,60 @@ Promise链能从一个Promise传递数据给下一个Promise。传递给执行�
 由于静态方法被继承了，`MyPromise.resolve()`方法、`MyPromise.reject()`方法、`MyPromise.race()`方法与`MyPromise.all()`方法在派生的Promise上都可用。后两个方法的行为等同于内置的方法，但前两个方法则有轻微的不同。
 
 `MyPromise.resolve()`与`MyPromise.reject()`都会返回`MyPromise`的一个实例，无视传递进来的值的类型，这是由于这两个方法使用了`Symbol.species`属性来决定需要返回的Promise的类型。若传递内置Promise给这两个方法，将会被决议或被拒绝，并且会返回一个新的`MyPromise`，以便绑定完成或拒绝处理函数。
+
+# event loop #
+事件循环可以理解为实现异步的一种方式。
+
+事件，用户交互，脚本，渲染，网络这些都是我们所熟悉的东西，他们都是由event loop协调的。触发一个click事件，进行一次ajax请求，背后都有event loop在运作。
+
+JS是单线程，也就是说只有一个主线程，主线程有一个栈，每一个函数执行的时候，都会生成新的执行上下文，执行上下文会包含一些当前函数的参数、局部变量之类的信息，它会被推入栈中。
+
+event loop的处理过程：
+
+1. 在task队列中选择最老的一个task，用户代理可以选择任何task队列，如果没有可选的任务，则跳到下边的microtask步骤。
+2. 将上边选择的task设置为正在运行的task
+3. Run：运行被选择的task
+4. 将event loop的currently runnig task变为null
+5. 从task队列里移除前边运行的task
+6. Microtasks：执行microtasks任务检查点。（也就是执行microtasks队列里的任务）
+7. 更新渲染
+8. 如果这是一个worker event loop，但是没有任务在task队列中，并且WorkerGlobalScope对象的closing标识为true，则销毁event loop，中止这些步骤，然后进行定义在web worker章节的run a worker
+9. 返回到第一步。
+
+event loop会不断循环上面的步骤，概括来说：
+
+- event loop会不断循环的去取tasks队列的中最老的一个任务推入栈中执行，并在当次循环里依次执行并清空microtask队列里的任务。
+- 执行完microtask队列里的任务，有可能会渲染更新。
+
+microtasks检查点（microtask checkpoint）
+
+当用户代理去执行一个microtask checkpoint，如果microtask checkpoint的flag（标识）为false，用户代理必须运行下面的步骤：
+
+1. 将microtask checkpoint的flag设为true
+2. Microtask queue handling：如果event loop的microtask队列为空，直接跳到第八步
+3. 在microtask队列中选择最老的一个任务。
+4. 将上一步选择的任务设为event loop的currently running task
+5. 运行选择的任务
+6. 将event loop的currently running task变为null
+7. 将前面运行的microtask从microtask队列中删除，然后返回到第二部
+8. Done：每一个environment settings object它们的responsible event loop 就是当前的event loop，会给environment settings object发一个rejected promises的通知。
+9. 清理IndexedDB的事务
+10. 将microtask checkpoint的flag设为false
+
+event loop中的Update the rendering（更新渲染）
+
+渲染的基本流程：
+
+1. 处理HTML标记并构建DOM树
+2. 处理CSS标记并构建CSSOM树，将DOM与CSSOM合并成一个渲染树
+3. 根据渲染树来布局，以计算每个节点的几何信息
+4. 将各个节点绘制到屏幕上
+
+学习链接：
+
+- [从event loop规范探究javaScript异步及浏览器更新渲染时机](https://github.com/aooy/blog/issues/5)
+- [从浏览器多进程到JS单线程，JS运行机制最全面的一次梳理](https://juejin.im/post/5a6547d0f265da3e283a1df7)
+- [JS异步机制](https://www.jianshu.com/p/667936441cb5)
 
 
 # git操作 #

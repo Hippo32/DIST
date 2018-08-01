@@ -68,13 +68,18 @@ dojo.require的一个极其重要的特点就是它对工具箱的本地安装�
 	- 上面两个方法，它们执行浅比较。所谓浅比较，对于像数组这样比较复杂的数据类型而言，意味着它们只比较引用。
 - every和some：确定是否数组中的每个元素都符合某个特定条件，或者只有其中部分元素符合该条件。
 	- 参数：一个数组，一个用于测试数组中每个元素的函数（每个元素都要传递给这个函数），以及一个可选的参数，用于提供测试函数的环境（this）。
+	- every(array, callback, scope)：该方法用来判断是否数组的全部元素都满足特定的条件
+	- some(array, callback, scope)：该方法用来判断数组中是否至少有一个元素满足特定的条件
 - forEach：将每个数组元素作为参数传递给一个函数，并且不返回任何值
 	- forEach: function(arr, callback, thisObject)
 		- arr: Array|String
 		- callback: Function|String
 		- thisObject: Object?
 - map和filter：对每个数组元素应用自定义逻辑以及返回另外一个数组并且不会修改原始数组。
-- map：能够通过转换函数基于数组构建一个映射。
+	- map(array, callback, scope)：该方法迎来对数组中的每个元素执行操作，并返回一个数组包含操作的结果
+	- filter(array, callback, scope)：该方法用来对数组中包含的元素进行过滤，只保留满足特定条件的元素。
+
+
 
 # dojoConfig #
 dojoConfig一定被定义在dojo.js加载之前。

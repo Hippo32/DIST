@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>0801</title>
+    <!-- <script src="js/dojo/dojo.js"></script> -->
+</head>
+<body>
+    <!-- <ul id="userlist1"></ul>
+    <ul id="userlist2"></ul> -->
+    <div id="con">this is con</div>
+    <script>
+        /* var con = document.getElementById('con');
+        con.onclick = function() {
+            Promise.resolve().then(function Promise1() {
+                con.textContent = 0;
+            })
+        }; */
+
+        var t = 0;
+        var con = document.getElementById('con');
+        con.onclick = function() {
+            setTimeout(function setTimenout1() {
+                con.textContent = t;
+            }, 0)
+        };
+        
+        /* Promise.resolve().then(function promise1() {
+            console.log('promise1');
+        })
+        setTimeout(function setTimeout1() {
+            console.log('setTimenout1')
+            Promise.resolve().then(function promise2() {
+                console.log('promise2');
+            })
+        }, 0)
+        setTimeout(function setTimeout2() {
+            console.log('setTimeout2')
+        }, 0) */
+
+        /* 上面代码运行结果
+         * promise1
+         * setTimeout1
+         * promise2
+         * setTimeout2
+         */
+
+        /* function bar() {
+            console.log('bar');
+        }
+        function foo() {
+            console.log('foo');
+            bar();
+        }
+        foo(); */
+
+        // 关于事件循环
+        /* console.log('start')
+        setTimeout(function() {
+            console.log('setTimeout')
+        }, 0)
+        Promise.resolve().then(function() {
+            console.log('promise1');
+        }).then(function() {
+            console.log('promise2');
+        });
+        console.log('end') */
+
+        /* 上面代码的运行结果
+         * start
+         * end
+         * promise1
+         * promise2
+         * setTimeout            
+         */
+
+        /* function callback() {
+            console.log('Done');
+        }
+        console.log('before setTimeout()');
+        setTimeout(callback, 1000); // 1秒钟后调用callback函数
+        console.log('after setTimeout()'); */
+
+        /* require(["dojo/Deferred"], function(Deferred) {
+            var d = new Deferred();
+            d.then(function(result) {
+                console.log("success: " + result + "\t" + Date());
+                console.log("isResolved=" + d.isResolved());
+                console.log("isFulfilled=" + d.isFulfilled());
+            },
+            function(err) {
+                console.log("err: " + err + "\t" + Date())
+            },
+            function(progress) {
+                console.log("progress: " + progress + "\t" + Date())
+            });
+            console.log("isResolved=" + d.isResolved());
+            console.log("isFulfilled=" + d.isFulfilled());
+            setTimeout(function(){d.progress(1);}, 1000);
+            setTimeout(function(){d.progress(2);}, 2000);
+            setTimeout(function(){d.progress(3);}, 3000);
+            setTimeout(function(){d.progress("ok");}, 3001);
+        }); */
+
+        /* require([
+            "dojo/dom",
+            "dojo/request",
+            "dojo/when",
+            "dojo/_base/array",
+            "dojo/dom-construct",
+            "dojo/domReady!"
+        ], function(dom, request, when, arrayUtil, domConstruct) {
+            function createUserList(node, users) {
+                var nodeRef = dom.byId(node);
+                return when(
+                    users,
+                    function(users) {
+                        arrayUtil.forEach(users, function(user) {
+                            domConstruct.create("li", {
+                                innerHTML: JSON.stringify(user)
+                            }, nodeRef);
+                        });
+                    },
+                    function(error) {
+                        domConstruct.create("li", {
+                            innerHTML: "Error: " + error
+                        }, nodeRef);
+                    }
+                );
+            }
+            var users = request.get("hello.json", {
+                handleAs: "json"
+            }).then(function(response) {
+                return arrayUtil.map(response, function(user) {
+                    return {
+                        id: user[0],
+                        username: user[1],
+                        name: user[2]
+                    };
+                });
+            });
+            createUserList("userlist1", users);
+            createUserList("userlist2",
+        [{
+            id: 100,
+            username: "username100",
+            naem: "User 100"
+        }]);
+        })    */ 
+    </script>
+</body>
+</html>
