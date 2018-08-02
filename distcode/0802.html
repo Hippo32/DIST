@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>0802</title>
+</head>
+<body>
+    <!-- <div id="con">this is con</div> -->
+    <div id="result">this is result</div>
+    <script>
+        
+        setTimeout(function setTimeout1() {
+            console.log('setTimeout1')
+        }, 0)
+        Promise.resolve().then(function promise1() {
+            console.log('promise1');
+        })
+
+        // 例子6
+        /* var con = document.getElementById('con');
+        con.onclick = function () {
+        setTimeout(function(){
+            con.textContent = 0;
+        },0)
+        setTimeout(function(){
+            con.textContent = 1;
+        },0)
+        setTimeout(function(){
+            con.textContent = 2;
+        },0)
+        setTimeout(function(){
+            con.textContent = 3;
+        },0)
+        setTimeout(function(){
+            con.textContent = 4;
+        },0)
+            setTimeout(function(){
+            con.textContent = 5;
+        },0)
+        setTimeout(function(){
+            con.textContent = 6;
+        },0)
+        }; */
+
+        // 更新渲染例子3
+        /* var con = document.getElementById('con');
+        con.onclick = function click1() {
+            setTimeout(function setTimeout1() {
+                con.textContent = 0;
+            }, 0)
+            setTimeout(function setTimeout2() {
+                con.textContent = 1;
+            }, 16.7)
+        }; */
+
+        // 更新渲染例子4
+        /* var con = document.getElementById('con');
+        con.onclick = function() {
+            setTimeout(function setTimeout1() {
+                con.textContent = 0;
+                Promise.resolve().then(function Promise1() {
+                    console.log('Promise1')
+                })
+            }, 0)
+        } */
+    </script>
+</body>
+</html>

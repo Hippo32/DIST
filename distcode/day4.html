@@ -5,12 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>数慧第四天和第五天代码</title>
-    <script src="dojo/dojo.js" data-dojo-config="async: true"></script>
+    <script src="js/dojo/dojo.js" data-dojo-config="async: true"></script>
 </head>
 <body>
     <script>
         // getInherited()不适用情况
-        require(["dojo/_base/declare"], function(declare){
+        /* require(["dojo/_base/declare"], function(declare){
             var A = declare(null, {
                 m1: function(){
                 // ...
@@ -39,13 +39,36 @@
                 var supermethod = this.getInherited("m2", arguments);
                 this.logAndCall("A.m2", supermethod, [1, 2]);
             };
-        });
+        }); */
 
         /* 
          *        
          *  这段代码不理解
          *
          */
+        require(["dojo/_base/lang", "dojo/_base/declare"], 
+            function(lang, declare) {
+                var A = declare(null, {
+                    m1: function() {
+                        console.log("I am m1");
+                        console.log(arguments.length);
+                    }
+                });
+                var B = declare(A, {
+                    m1: function() {
+                        this.inherited(arguments);
+                        this.inherited(arguments, [1, 2, 3]);
+                    }
+                });
+                var C = declare(A);
+                var y = new C();
+                console.log(y);
+                var x = new B();
+                console.log(x.__proto__);
+                x.m1();
+            })
+
+
         // inherited() 
         /* require([
             "dojo/_base/lang",
@@ -90,6 +113,7 @@
             });
 
             var x = new B();
+            console.log(x);
             x.m1();
             x.m2();
             x.m3();
