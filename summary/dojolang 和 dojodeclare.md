@@ -1,4 +1,4 @@
-# 数慧day4 #
+# dojo/_base中的lang和declare #
 2018/7/26 9:09:17 
 
 ## dojo/store ##
@@ -71,6 +71,34 @@ bind()函数：bind()方法会创建一个新函数，称为绑定函数，当�
 	- 具有多重继承的类：类数组表示多重继承。属性和方法从左到右继承。数组中的第一个类充当基本原型，然后后续类是该类的mixins。
 - `properties`：属性和方法对象。最后一个参数是一个包含类原型的方法和属性的对象。
 
+例子：
+
+    require(['dojo/_base/declare'], function(declare) {
+        declare("ClassX", null, {
+            messageX: null,
+            constructor: function(msgX) {
+                this.messageX = msgX;
+            },
+            sayMessageX: function() {
+                console.log("hi, this is " + this.messageX);
+            }
+        });
+    })
+    var objX = new ClassX("X");
+    objX.sayMessageX();
+    console.log(objX);
+
+构造函数的prototype的解析：
+
+- declaredClass：函数名，即传给dojo.declare的第一个函数
+- _constructor：类的初始化函数，即props中的constructor函数 ，当创建一个新对象时，由dojo.clare生成的构造函数自动调用此函数初始化所有的实例属性。
+- constructor：由dojo.clare为类生成的构造函数。
+- inherited：运用此方法可以调用父类的同名函数。
+- props中定义的所有属性及方法，此处包括messageX和sayMessageX。
+- 由于ClassX没有父类，则其`__proto__`执行根原型。
+
+![](https://i.imgur.com/AZPvAH8.png)
+
 ### 使用`constructor`深入挖掘Dojo的类创建 ###
 `constructor`方法在类实例化时触发，在新对象的范围内执行。这意味着`this`引用实例，而不是原始类。
 
@@ -123,6 +151,10 @@ this.inherited(arguments)语句调用父类的同名方法。
 链声明是继承的。可以在子类中覆盖单个方法的链接。
 
 ### 构造函数 ###
+构造函数参数：默认情况下，dojo.declare在多继承下会按序先将参数传递给父类的构造函数，然后传递给聚合类（即mixin）的构造函数，最后传递给子类的构造函数。
+
+this关键字是指向对象实例，而非类。constructor方法可以接受任意长度参数，用于实例初始化。
+
 所有的构造函数都使用`after`算法链接。
 
 手动构造函数

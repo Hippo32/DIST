@@ -46,49 +46,31 @@
          *  这段代码不理解
          *
          */
-        require(["dojo/_base/lang", "dojo/_base/declare"], 
-            function(lang, declare) {
-                var A = declare(null, {
-                    m1: function() {
-                        console.log("I am m1");
-                        console.log(arguments.length);
-                    }
-                });
-                var B = declare(A, {
-                    m1: function() {
-                        this.inherited(arguments);
-                        this.inherited(arguments, [1, 2, 3]);
-                    }
-                });
-                var C = declare(A);
-                var y = new C();
-                console.log(y);
-                var x = new B();
-                console.log(x.__proto__);
-                x.m1();
-            })
-
-
         // inherited() 
-        /* require([
+        require([
             "dojo/_base/lang",
             "dojo/_base/declare"
         ], function(lang, declare) {
             var A = declare(null, {
                 m1: function() {
-                    console.log("I am m1")
+                    console.log("I am m1");
+                    console.log(arguments);
                 },
                 m2: function() {
                     console.log("I am m2")
+                    console.log(arguments);
                 },
                 m3: function() {
                     console.log("I am m3")
+                    console.log(arguments);
                 },
                 m4: function() {
                     console.log("I am m4")
+                    console.log(arguments);
                 },
                 m5: function() {
                     console.log("I am m5")
+                    console.log(arguments);
                 }
             });
             var B = declare(A, {
@@ -134,7 +116,7 @@
 
             x.m4();
             x.m5();
-        }) */
+        })
 
         // createSubclass()
         /* require([
