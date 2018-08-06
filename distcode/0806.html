@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>0802</title>
+    <script>
+        dojoConfig = {
+            async: true,
+            baseUrl: "js/",
+            packages: [
+                {name: "dojo", location: "dojo"},
+                {name: "dijit", location: "dijit"},
+                {name: "dojox", location: "dojox"}
+            ],
+            parseOnLoad: true,
+            gfxRenderer: "svg,silverlight,vml"
+        };
+    </script>
+    <script src="js/dojo/dojo.js"></script>
+</head>
+<body>
+    <!-- <div style="width: 100px; height: 100px; background: red;" id="wipeTarget"></div> -->
+    <!-- <script>
+        /* require([
+            "dojox/charting/Chart",
+            "dojox/charting/themes/Claro"
+        ], function(Chart, theme) {
+            
+        }) */
+        
+        // dom核心模块 创建一个比较两个日期并返回差异的函数
+        /* require([
+            "dojo/date",
+            "dojo/dom",
+            "dojo/domReady!"
+        ], function(date, dom) {
+            function daysSince(fromDate, target) { 
+                if(!(fromDate instanceof Date)) { // 如果fromDate不属于Date，则执行
+                    fromDate = new Date(fromDate);
+                }
+                console.log("from  date: ", fromDate);
+                var now = new Date();
+                console.log("From Date: " + fromDate.toUTCString());
+                console.log("Difference in days: " +
+                    date.difference(fromDate, now, "day"));
+                var days = date.difference(fromDate, now, "day");
+                dom.byId(target).innerHTML = days;
+             }
+        }) */
+
+        // dom查询和操作
+        /* require([
+            "dojo/query",
+            "dojo/_base/array",
+            "dojo/dom-construct",
+            "dojo/domReady!"
+        ], function(query, array, domConst) {
+            function topLinks() { 
+                var headings = query('h2, h3');
+                array.forEach(headings, function(elm) {
+                    var topLink = domConst.create("a", {
+                        href: "#top",
+                        innerHTML: "^top"
+                    });
+                    domConst.place(topLink, elm, "before");
+                })
+             }
+        }) */
+
+        /* require([
+            "dijit/registry",
+            "dojo/parser",
+            "dojo/json",
+            "dojo/_base/config",
+            "dijit/Dialog",
+            "dojo/domReady!"
+        ], function(registry, parser, JSON, config) {
+            parser.parse();
+            var dialog = registry.byId("dialog");
+            dialog.set("content", "<pre>" + JSON.stringify(config, null, "\t") + "```");
+            dialog.show();
+        }); */
+
+        /* require(["dojo/fx", "dojo/dom", "dojo/domReady!"], function(fx, dom) {
+            var greeting = dom.byId("wipeTarget");
+            greeting.innerHTML += ' from Dojo!';
+            fx.slideTo({
+                node: greeting,
+                top: 100,
+                left: 200
+            }).play();
+        }); */
+     </script> -->
+    <!-- <div id="dialog" data-dojo-type="dijit/Dialog" data-dojo-props="title: 'dojoConfig / dojo/_base/config'"></div> -->
+
+        <!-- painting -->
+        <!-- <script type="text/javascript">
+            var s = document.body.style;
+            var computed;
+            if (document.body.currentStyle) {
+              computed = document.body.currentStyle;
+            } else {
+              computed = document.defaultView.getComputedStyle(document.body, '');
+            }
+     
+        function testOneByOne(){
+          s.color = 'red';;
+          tmp = computed.backgroundColor;
+          s.color = 'white';
+          tmp = computed.backgroundImage;
+          s.color = 'green';
+          tmp = computed.backgroundAttachment;
+        }
+        
+        function testAll() {
+          s.color = 'yellow';
+          s.color = 'pink';
+          s.color = 'blue';
+          
+          tmp = computed.backgroundColor;
+          tmp = computed.backgroundImage;
+          tmp = computed.backgroundAttachment;
+        }
+        </script>    
+        color test <br />
+        <button onclick="testOneByOne()">Test One by One</button>
+        <button onclick="testAll()">Test All</button> -->
+
+        <script type="text/javascript">
+            var s = document.body.style;
+            var computed;
+            if (document.body.currentStyle) {
+              computed = document.body.currentStyle;
+            } else {
+              computed = document.defaultView.getComputedStyle(document.body, '');
+            }
+        function testOneByOne(){
+          s.color = 'red';
+          s.padding = '1px';
+          tmp = computed.backgroundColor;
+          s.color = 'white';
+          s.padding = '2px';
+          tmp = computed.backgroundImage;
+          s.color = 'green';
+          s.padding = '3px';
+          tmp = computed.backgroundAttachment;
+        }
+        
+        function testAll() {
+          s.color = 'yellow';
+          s.padding = '4px';
+          s.color = 'pink';
+          s.padding = '5px';
+          s.color = 'blue';
+          s.padding = '6px';
+          
+          tmp = computed.backgroundColor;
+          tmp = computed.backgroundImage;
+          tmp = computed.backgroundAttachment;
+        }
+        </script>    
+        color test <br />
+        <button onclick="testOneByOne()">Test One by One</button>
+        <button onclick="testAll()">Test All</button>
+</body>
+</html>
