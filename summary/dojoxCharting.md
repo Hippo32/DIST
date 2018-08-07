@@ -24,15 +24,16 @@ Dojo的图库表存在于`dojox/charting`资源中。它：
 	    // ....
 	}
 
-如果首选特定的呈现优先级，则可以将其添加到加载Dojo之前创建的dojoConfig对象:
-
-	<script>
-	    dojoConfig = {
-	        parseOnLoad: true, //enables declarative chart creation
-	        gfxRenderer: "svg,silverlight,vml" // svg is first priority
-	    };
-	</script>
-	<script src="/path/to/dojo/dojo/dojo.js"></script>
 
 ## 创建一个基本的图表 ##
 创建基本图表有两种方法:声明式和编程式。然而，在创建图表之前，首先创建/访问数据是很重要的。
+## 图表组件 ##
+### Plots（图） ###
+### Axes（轴） ###
+### Series（系列） ###
+
+翻译链接：
+
+[Dojo1.11官方教程文档翻译（5.2）图表](https://blog.csdn.net/taijiedi13/article/details/54425590)
+
+[Dojo1.11官方教程文档翻译（5.3）图表进阶](https://blog.csdn.net/taijiedi13/article/details/54581939)

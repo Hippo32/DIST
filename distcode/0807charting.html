@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>charting</title>
+    <script>
+        dojoConfig = {
+            async: true,
+            baseUrl: "js/",
+            packages: [
+                {name: "dojo", location: "dojo"},
+                {name: "dijit", location: "dijit"},
+                {name: "dojox", location: "dojox"}
+            ],
+            parseOnLoad: true,
+            gfxRenderer: "svg,silverlight,vml"
+        };
+    </script>
+    <script src="js/dojo/dojo.js"></script>
+    <link rel="stylesheet" href="js/dijit/themes/claro/claro.css" media="screen">
+    <style>
+        .dijitSliderProgressBar {
+            background-color: #d6ff00;
+        }
+    </style>
+</head>
+<body>
+    <!-- 折线图,线下填充区域叠放数据集,柱状图 -->
+    <!-- <div id="chartNode" style="width: 800px;height: 400px;"></div> -->
+
+    <!-- 折线表添加Legend、 Tooltips 和 Magnify -->
+    <!-- <div id="chartNode" style="width:800px;height:400px;"></div>
+    <div id="legend"></div> -->
+
+    <!-- MoveSlice可移动饼图，高亮插件柱状图 -->
+    <!-- <div id="chartNode" style="width:800px;height:400px;"></div> -->
+
+    <!-- <table>
+            <tr><td align="center" class="pad">Scale X (<span id="scaleXValue">1</span>)</td></tr>
+            <tr><td>
+                <div id="scaleXSlider" data-dojo-type="dijit/form/HorizontalSlider" data-dojo-props="
+                        value: 1, minimum: 1, maximum: 5, discreteValues: 5, showButtons: false"
+                        style="width: 600px;">
+                    <div data-dojo-type="dijit/form/HorizontalRule" data-dojo-props="
+                        container: 'bottomDecoration', count: 5" style="height:5px;"></div>
+                    <div data-dojo-type="dijit/form/HorizontalRuleLabels" data-dojo-props="
+                        container: 'bottomDecoration', count: 5, minimum: 1, maximum: 5, constraints: {pattern: '##'}" style="height:1.2em;font-size:75%;color:gray;"></div>
+                </div>
+            </td></tr>
+            <tr><td align="center" class="pad">Scale Y (<span id="scaleYValue">1</span>)</td></tr>
+            <tr><td>
+                <div id="scaleYSlider" data-dojo-type="dijit/form/HorizontalSlider" data-dojo-props="
+                        value: 1, minimum: 1, maximum: 5, discreteValues: 5, showButtons: false"
+                        style="width: 600px;">
+                    <div data-dojo-type="dijit/form/HorizontalRule" data-dojo-props="
+                        container: 'bottomDecoration', count: 5" style="height:5px;"></div>
+                    <div data-dojo-type="dijit/form/HorizontalRuleLabels" data-dojo-props="
+                        container: 'bottomDecoration', count: 5, minimum: 1, maximum: 5, constraints: {pattern: '##'}" style="height:1.2em;font-size:75%;color:gray;"></div>
+                </div>
+            </td></tr>
+            <tr><td align="center" class="pad">Offset X (<span id="offsetXValue">0</span>)</td></tr>
+            <tr><td>
+                <div id="offsetXSlider" data-dojo-type="dijit/form/HorizontalSlider" data-dojo-props="
+                        value: 1, minimum: 0, maximum: 500, discreteValues: 501, showButtons: false"
+                        style="width: 600px;">
+                    <div data-dojo-type="dijit/form/HorizontalRule" data-dojo-props="
+                        container: 'bottomDecoration', count: 6" style="height:5px;"></div>
+                    <div data-dojo-type="dijit/form/HorizontalRuleLabels" data-dojo-props="
+                        container: 'bottomDecoration', count: 6, minimum: 0, maximum: 500, constraints: {pattern: '####'}" style="height:1.2em;font-size:75%;color:gray;"></div>
+                </div>
+            </td></tr>
+            <tr><td align="center" class="pad">Offset Y (<span id="offsetYValue">0</span>)</td></tr>
+            <tr><td>
+                <div id="offsetYSlider" data-dojo-type="dijit/form/HorizontalSlider" data-dojo-props="
+                        value: 1, minimum: 0, maximum: 500, discreteValues: 501, showButtons: false"
+                        style="width: 600px;">
+                    <div data-dojo-type="dijit/form/HorizontalRule" data-dojo-props="
+                        container: 'bottomDecoration', count: 6" style="height:5px;"></div>
+                    <div data-dojo-type="dijit/form/HorizontalRuleLabels" data-dojo-props="
+                        container: 'bottomDecoration', count: 6, minimum: 0, maximum: 500, constraints: {pattern: '####'}" style="height:1.2em;font-size:75%;color:gray;"></div>
+                </div>
+            </td></tr>
+        </table><br /><br /> -->
+
+        <!-- the chart node -->
+        <!-- <div id="chart" style="width: 800px; height: 400px;"></div> -->
+
+        <!-- form/HorizontalSlider滑块的用法 -->
+        <!-- <div id="slider"></div>
+        <p><input type="text" id="sliderValue" data-dojo-type="dijit/form/TextBox" /></p> -->
+
+        <div id="horizontalSLider"
+            style = "width: 400px;"
+            name = "horizontalSlider"
+            data-dojo-type = "dijit/form/HorizontalSlider"
+            data-dojo-props = "value: 6,
+                minimum: -10,
+                maximum: 10,
+                discreteValues: 11,
+                intermediateChanges: true,
+                showButtons: true">
+            <ol data-dojo-type = "dijit/form/HorizontalRuleLabels" container = "topDecoration"
+                style = "height: 1.5em; font-size: 75%; color: gray;">
+                <li>20%</li>
+                <li>40%</li>
+                <li>60%</li>
+                <li>80%</li>
+                <li></li>
+            </ol>
+            <div data-dojo-type="dijit/form/HorizontalRule" container="bottomDecoration"
+                count=11 style="height: 5px;"></div>
+            <ol data-dojo-type="dijit/form/HorizontalRuleLabels" container="bottomDecoration"
+                style="height: 1em;font-size: 75%;color: gray;">
+                <li>0%</li>
+                <li>50%</li>
+                <li>100%</li>
+            </ol>
+            </div>
+    <script>
+        // 带有离散值的声明性标记
+        require([
+            "dojo/parser",
+            "dijit/form/HorizontalSlider",
+            "dijit/form/HorizontalRule",
+            "dijit/form/HorizontalRuleLabels"
+        ]);
+        
+        // form/HorizontalSlider滑块的用法
+        /* require([
+            "dojo/ready",
+            "dijit/form/HorizontalSlider",
+            "dojo/dom",
+            "dijit/form/TextBox",
+            "dojo/parser"
+        ], function(ready, HorizontalSlider, dom) {
+            ready(function() {
+                var slider = new HorizontalSlider({
+                    name: "slider",
+                    value: 1, // 初始值
+                    // showButtons: false, // 滑块左右是否出现按钮
+                    minimum: -10, // 滑块最小值
+                    maximum: 10,  // 滑块最大值
+                    intermediateChanges: true, // 移动滑块时数字跟着变，如果为false，则释放鼠标时数字才变
+                    style: "width: 300px; background-color: green; padding: 10px;border: 10px solid #000", // 滑块的样式
+                    onChange: function(value) { // 域的内容改变时发生
+                        dom.byId("sliderValue").value = value;
+                    }
+                }, "slider");
+            });
+        }); */
+        
+        // 如何使用滑块来zoom、pan和scroll图表
+        // Require the dependencies
+        /* require([
+            "dijit/form/HorizontalSlider", 
+            "dijit/form/HorizontalRule", 
+            "dijit/form/HorizontalRuleLabels", 
+            "dojox/charting/Chart", 
+            "dojox/charting/themes/Claro", 
+            "dojox/lang/functional/object", 
+            "dijit/registry", 
+            "dojo/on", 
+            "dojo/dom", 
+            "dojo/_base/event", 
+            "dojo/parser", 
+            "dojox/charting/axis2d/Default", 
+            "dojox/charting/plot2d/Areas", 
+            "dojox/charting/plot2d/Grid", 
+            "dojo/domReady!"
+        ],function(HorizontalSlider, HorizontalRule, HorizontalRuleLabels, Chart, 
+            Claro, functionalObject, registry, on, dom, baseEvent, parser) {
+
+            // Initialize chart, scales, and offsets
+            var chart, moveable, scaleX = 1, scaleY = 1, offsetX = 0, offsetY = 0;
+
+            // Updates the slider values, animates the change in scale and offsets
+            var reflect = function(){
+                functionalObject.forIn(chart.axes, function(axis){
+                    var scale  = axis.getWindowScale(),
+                        offset = Math.round(axis.getWindowOffset() * axis.getScaler().bounds.scale);
+                    if(axis.vertical){
+                        scaleY  = scale;
+                        offsetY = offset;
+                    }else{
+                        scaleX  = scale;
+                        offsetX = offset;
+                    }
+                });
+                setTimeout(function(){
+                    registry.byId("scaleXSlider").set("value", scaleX);
+                    registry.byId("offsetXSlider").set("value", offsetX);
+                    registry.byId("scaleYSlider").set("value", scaleY);
+                    registry.byId("offsetYSlider").set("value", offsetY);
+                }, 25);
+            };
+
+            // Update the scale and offsets of *all* plots on the chart
+            var update = function(){
+                chart.setWindow(scaleX, scaleY, offsetX, offsetY, { duration: 1500 }).render();
+                reflect();
+            };
+
+            // The following four methods are fired when the corresponding sliders are  changed
+            var scaleXEvent = function(value){
+                scaleX = value;
+                dom.byId("scaleXValue").innerHTML = value;
+                update();
+            };
+
+            var scaleYEvent = function(value){
+                scaleY = value;
+                dom.byId("scaleYValue").innerHTML = value;
+                update();
+            };
+
+            var offsetXEvent = function(value){
+                offsetX = value;
+                dom.byId("offsetXValue").innerHTML = value;
+                update();
+            };
+
+            var offsetYEvent = function(value){
+                offsetY = value;
+                dom.byId("offsetYValue").innerHTML = value;
+                update();
+            };
+
+            // Function called when the mouse goes down
+            var _init = null;
+            var onMouseDown = function(e){
+                console.warn("mousedown");
+                _init = {x: e.clientX, y: e.clientY, ox: offsetX, oy: offsetY};
+                baseEvent.stop(e);
+            };
+
+            // Function called when the mouse is released
+            var onMouseUp = function(e){
+                if(_init){
+                    // Clears the click/drag, updates the chart
+                    console.warn("mouseup");
+                    _init = null;
+                    reflect();
+                    baseEvent.stop(e);
+                }
+            };
+
+            // Create the base chart
+            chart = new Chart("chart");
+            chart.setTheme(Claro);
+            chart.addAxis("x", {fixLower: "minor", natural: true, stroke: "grey",
+                majorTick: {stroke: "black", length: 4}, minorTick: {stroke: "gray", length: 2}});
+            chart.addAxis("y", {vertical: true, min: 0, max: 30, majorTickStep: 5, minorTickStep: 1, stroke: "grey",
+                majorTick: {stroke: "black", length: 4}, minorTick: {stroke: "gray", length: 2}});
+            chart.addPlot("default", {type: "Areas", animate: {duration: 1800}});
+            chart.addSeries("Series A", [0, 25, 5, 20, 10, 15, 5, 20, 0, 25]);
+            chart.addAxis("x2", {fixLower: "minor", natural: true, leftBottom: false, stroke: "grey",
+                majorTick: {stroke: "black", length: 4}, minorTick: {stroke: "gray", length: 2}});
+            chart.addAxis("y2", {vertical: true, min: 0, max: 20, leftBottom: false, stroke: "grey",
+                majorTick: {stroke: "black", length: 4}, minorTick: {stroke: "gray", length: 2}});
+            chart.addPlot("plot2", {type: "Areas", hAxis: "x2", vAxis: "y2", animate: {duration: 1800}});
+            chart.addSeries("Series B", [15, 0, 15, 0, 15, 0, 15, 0, 15, 0, 15, 0, 15, 0, 15, 0, 15], {plot: "plot2"});
+            chart.addPlot("grid", { type: "Grid", hMinorLines: true });
+            chart.render();
+
+            parser.parse();
+
+            // Add change events to the sliders to know when chart changes should be triggered
+            registry.byId("scaleXSlider").on("Change", scaleXEvent, true);
+            registry.byId("scaleYSlider").on("Change", scaleYEvent, true);
+            registry.byId("offsetXSlider").on("Change", offsetXEvent, true);
+            registry.byId("offsetYSlider").on("Change", offsetYEvent, true);
+
+            // Add mouse events to the chart to allow click and drag
+            var chartNode = dom.byId("chart");
+            on(chartNode, "mousedown", onMouseDown);
+            on(chartNode, "mouseup",   onMouseUp);
+        });
+ */
+        // dojo stores没实现
+        /* require([
+            "dojo/store/Observable",
+            "dojo/store/Memory",
+            "dojox/charting/Chart",
+            "dojox/charting/themes/Claro",
+            "dojox/charting/plot2d/Lines",
+            "dojox/charting/plot2d/Markers",
+            "dojox/charting/axis2d/Default",
+            "dojo/domReady!"
+        ], function(ObservableStore, MemoryStore, Chart, theme, LinesPlot) {
+            // Initial data
+            var data = [
+                // This information,presumably,would come from a database or web service
+                //Note thao the values for site are either 1 or 2
+                { id: 1, value: 20, site: 1 },
+                { id: 2, value: 16, site: 1 },
+                { id: 3, value: 11, site: 1 },
+                { id: 4, value: 18, site: 1 },
+                { id: 5, value: 26, site: 1 },
+                { id: 6, value: 19, site: 2 },
+                { id: 7, value: 20, site: 2 },
+                { id: 8, value: 28, site: 2 },
+                { id: 9, value: 12, site: 2 },
+                { id: 10, value: 4, site: 2 }
+            ];
+            // 创建data store
+            // 于客户端在data store中储存信息
+            var store = new ObservableStore(new MemoryStore({
+                data: {
+                    identifier: "id",
+                    label: "Users Online",
+                    items: data
+                }
+            }));
+            var chart = new Chart("chartNode");
+            chart.setTheme(theme);
+            chart.addPlot("default", {
+                type: LinesPlot,
+                markers: true
+            });
+            chart.addAxis("x");
+            chart.addAxis("y", { vertical: true, fixLower: "major", fixUpper: "major" });
+            chart.addSeries("y", new storeSeries(store, { query: { site: 1 } }, "value"));
+        }) */
+        
+        // 高亮插件柱状图
+        /* require([
+            // Require the basic chart class
+            "dojox/charting/Chart",
+            // Require the theme of our choosing
+            "dojox/charting/themes/MiamiNice",
+            //     We want to plot Columns
+            "dojox/charting/plot2d/Columns",
+            // Require the highlighter
+            "dojox/charting/action2d/Highlight",
+            //    We want to use Markers
+            "dojox/charting/plot2d/Markers",
+            //    We&#x27;ll use default x/y axes
+            "dojox/charting/axis2d/Default",
+            // Wait until the DOM is ready
+            "dojo/domReady!"
+        ], function(Chart, theme, ColumnsPlot, Highlight) {
+            // Define the data
+            var chartData = [10000,9200,11811,12000,7662,13887,14200,12222,12000,10009,11288,12099];
+            // Create the chart within it&#x27;s "holding" node
+            var chart = new Chart("chartNode");
+            // Set the theme
+            chart.setTheme(theme);
+            // Add the only/default plot
+            chart.addPlot("default", {
+                type: ColumnsPlot,
+                markers: true,
+                gap: 5
+            });
+            // Add axes
+            chart.addAxis("x");
+            chart.addAxis("y", { vertical: true, fixLower: "major", fixUpper: "major" });
+            // Add the series of data
+            chart.addSeries("Monthly Sales",chartData);
+            // 高亮！
+            new Highlight(chart,"default");
+            // Render the chart!
+            chart.render();
+        }); */
+        
+        // MoveSlice可移动饼图
+        /* require([
+            // Require 基础图表类
+            "dojox/charting/Chart",
+            // Require 我们选择的主题
+            "dojox/charting/themes/Claro",
+            // Charting plugins:
+            //     We want to plot a Pie chart
+            "dojox/charting/plot2d/Pie",
+            // 获取Legend, Tooltip, 和 MoveSlice 类
+            "dojox/charting/action2d/Tooltip",
+            "dojox/charting/action2d/MoveSlice",
+            //    使用的 Markers
+            "dojox/charting/plot2d/Markers",
+            //    使用 默认 x/y 坐标轴
+            "dojox/charting/axis2d/Default",
+            // 等待DOM加载
+            "dojo/domReady!"
+        ], function(Chart, theme, Pie, Tooltip, MoveSlice) {
+            // 定义 data
+            var chartData = [10000,9200,11811,12000,7662,13887,14200,12222,12000,10009,11288,12099];
+            // Create the chart within it's "holding" node
+            var chart = new Chart("chartNode");
+            // 设置 theme
+            chart.setTheme(theme);
+            // 添加 only/default plot
+            chart.addPlot("default", {
+                type: Pie,
+                markers: true,
+                radius:170
+            });
+            // 添加 axes
+            chart.addAxis("x");
+            chart.addAxis("y", { min: 5000, max: 30000, vertical: true, fixLower: "major", fixUpper: "major" });
+            // 添加 series of data
+            chart.addSeries("Monthly Sales - 2010",chartData);
+            // 创建 tooltip
+            var tip = new Tooltip(chart,"default");
+            // 创建 slice mover
+            var mag = new MoveSlice(chart,"default");
+            // 渲染图表！
+            chart.render();
+        }); */
+
+
+        // 折线表添加Legend、 Tooltips 和 Magnify
+        /* require([
+            // Require 基础图表类
+            "dojox/charting/Chart",
+            // Require 选择的主题
+            "dojox/charting/themes/Claro",
+            //     We want to plot Lines
+            "dojox/charting/plot2d/Lines",
+            // 加载 Legend, Tooltip, and Magnify classes
+            "dojox/charting/widget/Legend",
+            "dojox/charting/action2d/Tooltip",
+            "dojox/charting/action2d/Magnify",
+            //    使用 Markers
+            "dojox/charting/plot2d/Markers",
+            //    使用默认 x/y 坐标轴
+            "dojox/charting/axis2d/Default",
+            // 等待DOM加载
+            "dojo/domReady!"
+        ], function(Chart, theme, LinesPlot, Legend, Tooltip, Magnify) {
+            // 定义 data
+            var chartData = [10000,9200,11811,12000,7662,13887,14200,12222,12000,10009,11288,12099];
+            var chartData2 = [3000,12000,17733,9876,12783,12899,13888,13277,14299,12345,12345,15763];
+            var chartData3 = [3000,12000,17733,9876,12783,12899,13888,13277,14299,12345,12345,15763].reverse();
+            // 在节点中创建图表
+            var chart = new Chart("chartNode");
+            // 设置主题
+            chart.setTheme(theme);
+            // Add the only/default plot
+            chart.addPlot("default", {
+                type: LinesPlot,
+                markers: true
+            });
+            // 添加坐标轴
+            chart.addAxis("x");
+            chart.addAxis("y", { min: 5000, max: 30000, vertical: true, fixLower: "major", fixUpper: "major" });
+            // 添加 series of data
+            chart.addSeries("Monthly Sales - 2010",chartData);
+            chart.addSeries("Monthly Sales - 2009",chartData2);
+            chart.addSeries("Monthly Sales - 2008",chartData3);
+            // 创建 tooltip 在鼠标悬停自标记和图标快时根据布标类型展示值
+            var tip = new Tooltip(chart,"default");
+            // 创建 magnifier 稍微放大图表标记
+            var mag = new Magnify(chart,"default");
+            // 渲染图表！
+            chart.render();
+            // 创建 legend 包含图例来进一步明确图表提供的数据
+            var legend = new Legend({ chart: chart }, "legend");
+        }); */
+        
+        // 柱状图
+        /* require([
+            // Require 基本图表类
+            "dojox/charting/Chart",
+            // Require 选择的主题
+            "dojox/charting/themes/MiamiNice",
+            // Charting plugins:
+            //     使用Columns
+            "dojox/charting/plot2d/Columns",
+            //    使用Markers
+            "dojox/charting/plot2d/Markers",
+            //   使用 默认 x/y 坐标轴
+            "dojox/charting/axis2d/Default",
+            // 等待DOM准备
+            "dojo/domReady!"
+        ], function(Chart, theme) {
+            // 定义数据
+            var chartData = [10000,9200,11811,12000,7662,13887,14200,12222,12000,10009,11288,12099];
+            // 在节点中创建图表
+            var chart = new Chart("chartNode");
+            // 设置主题
+            chart.setTheme(theme);
+            // 添加 only/default plot
+            chart.addPlot("default", {
+                type: "Columns",
+                markers: true,
+                gap: 5
+            });
+            // 添加坐标轴
+            chart.addAxis("x");
+            chart.addAxis("y", { vertical: true, fixLower: "major", fixUpper: "major" });
+            // 添加 series of data
+            chart.addSeries("Monthly Sales",chartData);
+            // 渲染图表！
+            chart.render();
+        }); */
+        
+        // 折线图
+        /* require([
+            "dojox/charting/Chart",
+            "dojox/charting/themes/Tom",
+            "dojox/charting/plot2d/Lines",
+            "dojox/charting/plot2d/Markers",
+            "dojox/charting/axis2d/Default",
+            "dojo/domReady!"
+        ], function(Chart, theme) {
+            var chartData = [10000,9200,11811,12000,7662,13887,14200,12222,12000,10009,11288,12099];
+            var chart = new Chart("chartNode");
+            chart.setTheme(theme);
+            chart.addPlot("default", {
+                type: "Lines", // 类型：折线图
+                markers: true // 表示是否将数据点标记添加到图表中
+            });
+            chart.addAxis("x"); // 添加x轴
+            chart.addAxis("y", { // 添加y轴
+                min: 5000, // 轴开始的最小数
+                max: 15000, // 轴结束的最大数
+                vertical: true, 
+                fixLower: "major", // 排列图表记号（可以是"major"、"minor"、"micro"和"none"
+                fixUpper: "major" // 排列图表记号（可以是"major"、"minor"、"micro"和"none"
+            });
+            chart.addSeries("SalesThisDecade",chartData); // 指一系列要渲染到图表的数据
+            chart.render();
+        }); */
+
+        // 线下填充区域叠放数据集
+        /* require([
+            // Require 基础2D图表资源: Chart2D
+            "dojox/charting/Chart",
+            // Require 选择的主题
+            "dojox/charting/themes/Dollar",
+            // Charting plugins:
+            //    使用 StackedAreas
+            "dojox/charting/plot2d/StackedAreas",
+            //    使用 Markers
+            "dojox/charting/plot2d/Markers",
+            //    使用 default x/y 坐标轴
+            "dojox/charting/axis2d/Default",
+            // Wait until the DOM is ready
+            "dojo/domReady!"
+        ], function(Chart, theme) {
+            // 定义数据
+            var chartData = [10000,9200,11811,12000,7662,13887,14200,12222,12000,10009,11288,12099];
+            var chartData2 = [3000,12000,17733,9876,12783,12899,13888,13277,14299,12345,12345,15763];
+            // 在节点中创建图表
+            var chart = new Chart("chartNode");
+            // 设置主题
+            chart.setTheme(theme);
+            // Add the only/default plot
+            chart.addPlot("default", {
+                type: "StackedAreas", // 使用线下填充区域叠放数据集
+                markers: true
+            });
+            // 添加 axes
+            chart.addAxis("x");
+            chart.addAxis("y", { min: 5000, max: 30000, vertical: true, fixLower: "major", fixUpper: "major" });
+            //  添加 the series of data
+            chart.addSeries("Monthly Sales - 2010",chartData);
+            chart.addSeries("Monthly Sales - 2009",chartData2);
+            // 渲染图表！
+            chart.render();
+        }); */
+
+    </script>
+</body>
+</html>

@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>0802</title>
+    <title>0806</title>
     <script>
         dojoConfig = {
             async: true,
@@ -22,12 +22,22 @@
 </head>
 <body>
     <!-- <div style="width: 100px; height: 100px; background: red;" id="wipeTarget"></div> -->
-    <!-- <script>
+    <script>
+
+        
         /* require([
             "dojox/charting/Chart",
             "dojox/charting/themes/Claro"
         ], function(Chart, theme) {
-            
+            chartData = [
+                { x: 1, y: 19021 },
+                { x: 1, y: 12837 },
+                { x: 1, y: 12378 },
+                { x: 1, y: 21882 },
+                { x: 1, y: 17654 },
+                { x: 1, y: 15833 },
+                { x: 1, y: 16122 }
+            ];
         }) */
         
         // dom核心模块 创建一个比较两个日期并返回差异的函数
@@ -92,7 +102,16 @@
                 left: 200
             }).play();
         }); */
-     </script> -->
+     </script>
+
+     <!-- <div
+        data-dojo-type="dojox/charting/widget/Chart"
+        data-dojo-props="theme:dojox.charting.themes.Claro" id="viewsChart" style="width: 550px; height: 550px;">
+        <div class="plot" name="default" type="Pie" radius="200" fontColor="#00" labelOffset="-20"></div>
+        <div class="series" name="Last Week&#x27;s Visits" array="chartData"></div>
+     </div> -->
+
+
     <!-- <div id="dialog" data-dojo-type="dijit/Dialog" data-dojo-props="title: 'dojoConfig / dojo/_base/config'"></div> -->
 
         <!-- painting -->
@@ -128,7 +147,7 @@
         <button onclick="testOneByOne()">Test One by One</button>
         <button onclick="testAll()">Test All</button> -->
 
-        <script type="text/javascript">
+        <!-- <script type="text/javascript">
             var s = document.body.style;
             var computed;
             if (document.body.currentStyle) {
@@ -163,6 +182,6 @@
         </script>    
         color test <br />
         <button onclick="testOneByOne()">Test One by One</button>
-        <button onclick="testAll()">Test All</button>
+        <button onclick="testAll()">Test All</button> -->
 </body>
 </html>
