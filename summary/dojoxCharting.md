@@ -32,6 +32,17 @@ Dojo的图库表存在于`dojox/charting`资源中。它：
 ### Axes（轴） ###
 ### Series（系列） ###
 
+## dojox/charting事件 ##
+### `connectToPlot` ###
+connectToPlot的`event`对象不同传统DOM事件。这个事件对象包含以下键值属性：
+
+- type：事件类型（onclick、onmouseover或onmouseleave）
+- element：悬停的元素类型（marker、bar、column、circle、slice）
+- x：点x的值
+- y：点y的值
+- shape：代表数据点的gfx形状对象
+
+
 翻译链接：
 
 [Dojo1.11官方教程文档翻译（5.2）图表](https://blog.csdn.net/taijiedi13/article/details/54425590)

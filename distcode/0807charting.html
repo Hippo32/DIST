@@ -21,9 +21,9 @@
     <script src="js/dojo/dojo.js"></script>
     <link rel="stylesheet" href="js/dijit/themes/claro/claro.css" media="screen">
     <style>
-        .dijitSliderProgressBar {
+        /* .dijitSliderProgressBar {
             background-color: #d6ff00;
-        }
+        } */
     </style>
 </head>
 <body>
@@ -91,7 +91,7 @@
         <!-- <div id="slider"></div>
         <p><input type="text" id="sliderValue" data-dojo-type="dijit/form/TextBox" /></p> -->
 
-        <div id="horizontalSLider"
+        <!-- <div id="horizontalSLider"
             style = "width: 400px;"
             name = "horizontalSlider"
             data-dojo-type = "dijit/form/HorizontalSlider"
@@ -117,16 +117,9 @@
                 <li>50%</li>
                 <li>100%</li>
             </ol>
-            </div>
+            </div> -->
+
     <script>
-        // 带有离散值的声明性标记
-        require([
-            "dojo/parser",
-            "dijit/form/HorizontalSlider",
-            "dijit/form/HorizontalRule",
-            "dijit/form/HorizontalRuleLabels"
-        ]);
-        
         // form/HorizontalSlider滑块的用法
         /* require([
             "dojo/ready",
@@ -154,11 +147,11 @@
         // 如何使用滑块来zoom、pan和scroll图表
         // Require the dependencies
         /* require([
-            "dijit/form/HorizontalSlider", 
-            "dijit/form/HorizontalRule", 
-            "dijit/form/HorizontalRuleLabels", 
+            "dijit/form/HorizontalSlider", // 滑块
+            "dijit/form/HorizontalRule", // container（在滑块上面显示还是在下面显示）和count（显示的数量）
+            "dijit/form/HorizontalRuleLabels", // 指定标签
             "dojox/charting/Chart", 
-            "dojox/charting/themes/Claro", 
+            "dojox/charting/themes/Claro", // 主题
             "dojox/lang/functional/object", 
             "dijit/registry", 
             "dojo/on", 

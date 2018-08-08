@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>0808</title>
+    <script>
+        dojoConfig = {
+            async: true,
+            baseUrl: "js/",
+            packages: [
+                {name: "dojo", location: "dojo"},
+                {name: "dijit", location: "dijit"},
+                {name: "dojox", location: "dojox"}
+            ],
+            parseOnLoad: true,
+            // gfxRenderer: "svg,silverlight,vml"
+        };
+    </script>
+    <script src="js/dojo/dojo.js"></script>
+    <!-- <link rel="stylesheet" href="js/dijit/themes/claro/claro.css" media="screen"> -->
+</head>
+<body>
+        <!-- <div id="chartNode" style="width: 800px;height: 400px;"></div> -->
+
+        <!-- 复选框例子 -->
+        <!-- <input type="checkbox" id="dbox1" checked
+            data-dojo-type = "dijit/form/CheckBox">
+        <label for = "dbox1">Want</label> -->
+
+        <!-- <div id="pbox1_container"></div> -->
+
+        <!-- <input type = "checkbox" id="topping1" checked
+            data-dojo-type = "dijit/form/CheckBox" value="hello"> -->
+
+        <!-- 单选框 -->
+        <!-- <ul>
+            <li>
+                <input id="topping1" type="radio" name="topping" value="anchovies"
+                    checked data-dojo-type="dijit/form/RadioButton">
+                <label for="topping1">Anchovies</label>
+            </li>
+            <li>
+                <input id="topping2" type="radio" name="topping" value="olives"
+                    checked data-dojo-type="dijit/form/RadioButton">
+                <label for="topping2">Olives</label>
+            </li>
+            <li>
+                <input id="topping3" type="radio" name="topping" value="pineapple"
+                    checked data-dojo-type="dijit/form/RadioButton">
+                <label for="topping3">Pineapple</label>
+            </li>
+        </ul> -->
+
+        <!-- <input type="checkbox" dojoType="dijit/form/ToggleButton" checked iconClass="dijitCheckBoxIcon" lable="Toggle Me"> -->
+        <div data-dojo-type="templates/SomeWidget"
+            data-dojo-props="title: 'Our Some Widget'">
+            <p>This is arbitrary content!</p>
+            <p>More arbitrary content!</p>
+        </div>
+    <script>
+        // 自定义widget
+        define([
+            "dojo/_base/declare",
+            "dijit/_WidgetBase",
+            "dijit/_TemplatedMixin",
+            "dojo/text!./templates/SomeWidget.html"
+        ], function(declare, _WidgetBase, _TemplatedMixin, template) {
+            return declare([_WidgetBase, _TemplatedMixin], {
+                templateString: template
+            });
+        });
+        
+        // 单选框
+        /* require([
+            "dijit/registry"
+        ], function(registry) {
+            // 又是调用不了on方法，why？？
+            registry.byId("topping1").on("change", function(isChecked) {
+                if(isChecked) {
+                    summaryNode.innerHTML = "Likes the salty!";
+                }
+            }, true);
+        }) */
+
+        /* require(["dijit/registry"], function(registry){
+
+            
+        // 这个地方用不了get方法。。我也很绝望。。。
+        var toppings = [];
+        if(registry.byId("topping1").get("checked")){
+            toppings.push(registry.byId("topping1").get("value"));
+        }
+
+        // if(registry.byId("topping2").get("value") !== false){
+        //     toppings.push(registry.byId("topping2").get("value"));
+        }) */
+
+        
+        // 复选框例子
+        /* require([
+            "dijit/form/CheckBox"
+        ], function(CheckBox) {
+            var box1 = new CheckBox({
+                id: "pbox1",
+                checked: true
+            });
+
+            // place the widget on the page
+            box1.placeAt("pbox1_container", "first");
+        }); */
+        
+        /* // Require the basic 2d chart resource: Chart
+        // Retrieve the Tooltip class
+        // Require the theme of our choosing
+        require([
+            "dojox/charting/Chart", 
+            "dojox/charting/action2d/Tooltip", 
+            "dojox/charting/themes/Claro", 
+            "dojox/charting/plot2d/Pie", 
+            "dojox/charting/axis2d/Default", 
+            "dojo/domReady!"], 
+        function(Chart, Tooltip, Claro) {
+            // Define the data
+            var chartData = [10000,9200,11811,12000,7662,13887,14200,12222,12000,10009,11288,12099];
+            // Create the chart within it's "holding" node
+            var chart = new Chart("chartNode");
+            // Set the theme
+            chart.setTheme(Claro);
+            // Add the only/default plot
+            chart.addPlot("default", {
+                type: "Pie",
+                markers: true
+            });
+            // Add axes
+            chart.addAxis("x");
+            chart.addAxis("y", { min: 5000, max: 30000, vertical: true, fixLower: "major", fixUpper: "major" });
+
+            // Add the series of data
+            chart.addSeries("Monthly Sales - 2010", chartData);
+
+            // Create the tooltip
+            var tip = new Tooltip(chart, "default");
+
+            // Render the chart!
+            chart.render();
+
+            // Add a mouseover event to the plot
+            chart.connectToPlot("default",function(evt) {
+                // Output some debug information to the console
+                console.warn(evt.type," on element ",evt.element," with shape ",evt.shape);
+                // Get access to the shape and type
+                var shape = evt.shape, type = evt.type;
+                // React to click event
+                if(type == "onclick") {
+                    // Update its fill
+                    var rotateFx = new gfxFx.animateTransform({
+                        duration: 1200,
+                        shape: shape,
+                        transform: [
+                            { name: "rotategAt", start: [0,240,240], end: [360,240,240] }
+                        ]
+                    }).play();
+                }
+                // If it's a mouseover event
+                else if(type == "onmouseover") {
+                    // Store the original color
+                    if(!shape.originalFill) {
+                        shape.originalFill = shape.fillStyle;
+                    }
+                    // Set the fill color to pink
+                    shape.setFill("pink");
+                }
+                // If it's a mouseout event
+                else if(type == "onmouseout") {
+                    // Set the fill the original fill
+                    shape.setFill(shape.originalFill);
+                }
+
+            });
+
+}); */
+    </script>
+</body>
+</html>
