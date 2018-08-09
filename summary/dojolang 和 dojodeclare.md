@@ -1,5 +1,5 @@
 # dojo/_base中的lang和declare #
-2018/7/26 9:09:17 
+2018/7/26
 
 ## dojo/store ##
 用于访问和操作存储的数据。

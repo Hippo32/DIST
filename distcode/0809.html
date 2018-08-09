@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>自定义一个部件的官网例子</title>
+    <script src="js/dojo/dojo.js"></script>
+    <script>
+        dojoConfig = {
+            async: true,
+            baseUrl: "js/",
+            packages: [
+                {name: "dojo", location: "dojo"},
+                {name: "dijit", location: "dijit"},
+                {name: "dojox", location: "dojox"},
+                {name: "widget", location: "widget"}
+            ],
+            parseOnLoad: true,
+            gfxRenderer: "svg,silverlight,vml"
+        };
+    </script>
+    <link type="text/css" rel="stylesheet" href="js/widget/css/AuthorWidget.css">
+</head>
+<body>
+    <div id="authorContainer"></div>
+    <script>
+        require([
+            "dojo/request",
+            "dojo/dom",
+            "dojo/_base/array",
+            "widget/AuthorWidget",
+            "dojo/domReady!"
+        ], function(request, dom, arrayUtil, AuthorWidget) {
+            request("./data/authors.json", {
+                handleAs: "json"
+            }).then(function(authors) {
+                var authorContainer = dom.byId("authorContainer");
+                arrayUtil.forEach(authors, function(author) {
+                    var widget = new AuthorWidget(author).placeAt(authorContainer);
+                });
+            });
+        })
+    </script>
+</body>
+</html>

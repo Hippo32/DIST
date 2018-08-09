@@ -1,0 +1,12 @@
+[
+    {
+        "name": "Brian Arnold",
+        "avatat": "./js/widget/images/defaultAvatar.jpg",
+        "bio": "Brian Arnold is a softwart engineeer at SitePen, Inc.,..."
+    },
+    {
+        "name": "Bryan Forbes",
+        "avatat": "./js/widget/images/defaultAvatar.jpg",
+        "bio": "Brian Arnold is a softwart engineeer at SitePen, Inc.,..."
+    }
+]
