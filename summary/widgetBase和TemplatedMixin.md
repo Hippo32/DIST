@@ -13,6 +13,12 @@
 		- `postCreate`
 - `startup`
 
+![](https://i.imgur.com/yPeChjd.jpg)
+
+图中椭圆行的三个方法是dijit提供的扩展点，用户可以自己覆盖这些方法。startup方法需要显式被调用。
+
+组件的connect()绑定事件处理方法。subscribe()监听事件通知。
+
 这些方法的作用
 
 1. 从默认值和运行时值初始化小部件数据
@@ -21,7 +27,7 @@
 4. 处理依赖于文档中DOM结构的逻辑(比如DOM元素维度)
 
 ### postCreate() ###
-当widget的所有属性都已定义，且代表该widget的DOM结构已被创建（但在连入住DOM树之前）时，这个方法被调用。在开发一个自定义widget时，大多数的定制都会出现在这个函数中。
+当widget的所有属性都已定义，且代表该widget的DOM结构已被创建（但在连入主DOM树之前）时，这个方法被调用。在开发一个自定义widget时，大多数的定制都会出现在这个函数中。
 
 ### startup() ###
 这个方法在widget的DOM结构被连入主DOM树之后被调用。在该函数之前，这个widget的所有子widget都已被创建并启动了。这个函数对弈复合widget（例如布局widget）是非常有用的。
@@ -131,9 +137,44 @@ Dijit的模板系统还能用模板来创建更加复杂的widget。这个混合
 步骤：
 
 1. 创建必要的小部件目录结构
-2. 创建展示单个作者的HTML标记
+
+	![](https://i.imgur.com/FYiKCw4.png)
+2. 创建HTML标记，即在templates中添加HTML文件
+	- 多使用`data-dojo-attach-point`
+	- 只能有一个根节点
 3. 在第二点的基础上把这些标记变成Dijit模板
 4. 使用Dojo.declare来创建我们的小部件类
+		
+	一个大致的模板
+
+		define([
+			"dojo/_base/declare",
+			"dojo/dom-construct",
+			"dijit/_WidgetBase",
+			"dijit/_TemplatedMixin",
+			"dojo/_base/lang",
+			"dojo/text!./templates/calendar.html"
+		], function(declare, domConstruct, _WidgetBase, _TemplatedMixin,  lang, template) {
+			return declare([_Widget, _TemplatedMixin], {
+				templateString: template,
+				baseClass: "xxx", // 将会被应用到模板根节点的CSS类名
+				
+				// 从index.html获取传来的参数
+				constructor: function(args) {
+					if(args) {
+						lang.mixin(this, args);
+					}
+				},
+
+				// 在postCreate中初始化
+				postCreate: function() {
+					this.inherited(arguments);
+					// ...
+				},
+				// 各种方法，在postCreate中调用
+			}）
+		}）
+
 5. 进行必要的CSS美化
 
 ### 把HTML片段编程Dijit模板 ###
@@ -146,10 +187,11 @@ Dijit的模板系统还能用模板来创建更加复杂的widget。这个混合
 注意：
 
 - 所有基于dijit._WidgetBase的小部件都有一个baseClass属性
-- postCreate方法是用来添加我们的工作逻辑的主要入口。它的调用时机时在小部件的DOM结构成功构建后，但是还没有被添加到页面的DOM树之前（也即用户看不到这个小部件的DOM节点）。一次通常把初始化的工作放在这个方法中。
+- postCreate方法是用来添加我们的工作逻辑的主要入口。它的调用时机时在小部件的DOM结构成功构建后，但是还没有被添加到页面的DOM树之前（也即用户看不到这个小部件的DOM节点）。通常把初始化的工作放在这个方法中。
 
 参考链接：
 
 - [深入理解_WidgetBase](https://blog.csdn.net/dojotoolkit/article/details/7860938)
 - [创建基于模板的widget](https://blog.csdn.net/taijiedi13/article/details/55252001)
 - [创建自定义Dojo小部件(Widget)](https://blog.csdn.net/dojotoolkit/article/details/6688058)
+- [扩展 Dojo dijits 来创建自定义小部件 - 扩展日历部件](https://blog.csdn.net/joyous/article/details/51456299)

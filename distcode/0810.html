@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>0810</title>
+    <script type="text/javascript" date-dojo-config="async: true" src="js/dojo/dojo.js"></script>
+    <script>
+        dojoConfig = {
+            baseUrl: "js/",
+            packages: [
+                {name: "dojo", location: "dojo"},
+                {name: "dijit", location: "dijit"}
+            ]
+        }
+    </script>
+</head>
+<body>
+    
+    <div id="someDialog" data-dojo-type="dijit/Dialog" data-dojo-props="title: 'Hello World!'">
+        <p>I am a dialog. That makes me happy.</p>
+    </div>
+    <button type="button" id="myButton" data-dojo-type="dijit/form/Button">
+        <span>Click Me!</span>
+        <script type="dojo/on" data-dojo-event="click">
+            var registry = require("dijit/registry");
+            registry.byId("someDialog").show();
+        </script>
+    </button>
+    
+    <!-- <div data-dojo-id="myStore" data-dojo-type="dojo/store/Memory" data-dojo-props="data: [
+        { name: 'Alabama', id: 'AL' },
+        { name: 'Alaska', id: 'AK' },
+        { name: 'Arizona', id: 'AZ' },
+        { name: 'California', id: 'CA' },
+        { name: 'Colorado', id: 'CO' },
+        { name: 'Connecticut', id: 'CT' },
+        { name: 'New York', id: 'NY' }
+        ]"></div>
+    <select id="mySelect" name="state" value="CA"
+        data-dojo-type="dijit/form/FilteringSelect" 
+        data-dojo-props="searchAttr: 'name', store: myStore"></select> -->
+    <script>
+        /* require(["dojo/parser", "dijit/form/Button", "dojo/domReady!"], function(parser) {
+            parser.parse();
+        }); */
+        
+        // 关于dojo/date.compare的test
+        /* require(["dojo/date"], function(date) {
+            var date1 = new Date();
+            var date2 = new Date(2000, 0, 1);
+
+            // Compares both the date and time protions
+            var result1 = date.compare(date1, date2);
+            console.log(result1); // 1
+
+            var result2 = date.compare(date1, date2, "datetime");
+            console.log(result2);
+        }) */
+    </script>
+</body>
+</html>

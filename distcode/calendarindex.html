@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>calendarindex</title>
+    <script>
+            dojoConfig = {
+                async: true,
+                baseUrl: "js/",
+                packages: [
+                    {name: "dojo", location: "dojo"},
+                    {name: "dijit", location: "dijit"},
+                    {name: "dojox", location: "dojox"},
+                    {name: "widget", location: "widget"}
+                ],
+                parseOnLoad: true,
+                gfxRenderer: "svg,silverlight,vml"
+            };
+        </script>
+    <script data-dojo-config="async: true, parseOnLoad: true" src="js/dojo/dojo.js"></script>
+    <style type="text/css">
+        @import "js/dojo/resources/dojo.css";
+        @import "js/dijit/themes/claro/claro.css";
+        @import "js/widget/css/customCalendar.css";
+    </style>
+</head>
+<body class="claro">
+    <div id="nodeId"></div>
+    <script>
+        require(["widget/customCalendar", "dojo/_base/connect"],
+            function(myCalendar, connect) {
+                var params = {
+                    "bookingWindowMinDate": "1/1/2018",
+                    "bookingWindowMaxDate": "12/31/2019",
+                    "selectedDate": "3/18/2018",
+                    "onValueSelectedPublishIDString": "selectedValueID"
+                };
+                var myTest = myCalendar(params);
+                myTest.placeAt("nodeId", 'lase');
+                connect.subscribe("selectedValueID", function(date) {
+                    console.log("I got: ", date);
+                });
+            });
+    </script>
+</body>
+</html>
