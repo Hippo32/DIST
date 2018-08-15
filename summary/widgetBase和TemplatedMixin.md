@@ -13,6 +13,22 @@
 		- `postCreate`
 - `startup`
 
+即：
+
+- 调用`constructor`方法
+- 将创建组件时指定的参数mixin到组件实例中
+- 执行`postMixInProperties`方法
+- 执行`buildRendering`方法（创建组件的DOM对象）
+- 复制组件对象中的属性到DOM对象中
+- 执行`postCreate`方法
+- 执行`startup`方法
+- 组件销毁时执行`destroy`方法
+
+注意：  
+`constructor`方法在`new`后者`parse`时调用  
+`startup`方法可由外层组件或者`placeAt`或者`addChild`或者手动调用  
+其他的方法均是在组件的`create`方法中调用
+
 ![](https://i.imgur.com/yPeChjd.jpg)
 
 图中椭圆行的三个方法是dijit提供的扩展点，用户可以自己覆盖这些方法。startup方法需要显式被调用。
@@ -26,22 +42,45 @@
 3. 将小部件的DOM结构放在页面中
 4. 处理依赖于文档中DOM结构的逻辑(比如DOM元素维度)
 
+### constructor ###
+创建一个组件对象时调用，可以做一些变量初始化。值得注意的是此时传递给组件的变量还没有mixin到组件对象中。
+
+### postMixInProperties ###
+在执行postMixInProperties方法之前传递给组件对象的属性已经mixin到组件对象中，可以在create方法中找到如下代码：
+
+	if (params) {
+		this.params = params;
+		lang.mixin(this, params);
+	}
+	this.postMixInProperties();
+注意：虽然在postMixInProperties方法执行前已经将创建组件时配置对象中的属性mixin到组件对象中，但是对这些属性进行更改是不恰当的，dojo会在执行完成postMixInProperties后做第二次属性覆盖。所以建议在postCreate中进行修改。
+
 ### postCreate() ###
 当widget的所有属性都已定义，且代表该widget的DOM结构已被创建（但在连入主DOM树之前）时，这个方法被调用。在开发一个自定义widget时，大多数的定制都会出现在这个函数中。
 
 ### startup() ###
-这个方法在widget的DOM结构被连入主DOM树之后被调用。在该函数之前，这个widget的所有子widget都已被创建并启动了。这个函数对弈复合widget（例如布局widget）是非常有用的。
+这个方法在widget的DOM结构被连入主DOM树之后被调用。在该函数之前，这个widget的所有子widget都已被创建并启动了。这个函数对于复合widget（例如布局widget）是非常有用的。
+
+startup方法的调用规则：
+
+1. 组件包含在容器组件之内（包括程序式和声明式，这也是为什么完全程序式创建的项目最外层组件一定要手动调用startup的原因），startup方法会由外层容器组件调用。
+2. 组件不包含在任何容器组件之内（如，直接放在body内），此时startup方法会由parser调用（声明式）。
+3. 程序式创建不包含在其他组件之内的时候可以由以下几种方式调用:
+	1. 手动调用
+	2. 将组件placeAt到指定DOM对象时placeAt会调用startup方法。但是这样情况是有条件的，首先是startup没有被调用过，其次是placeAt后组件又父组件（父组件必须先于子组件创建），再次父组件的startup已经调用过。
+	3. 容器组件调用自己的addChild方法将组建添加到自己之中是会调用子组件的startup。（注：addChild与placeAt方法功能类似，addChild必须是容器组件，placeAt可以把组件放在任何DOM对象中。addChild和placeAt均可接收第二参数，即组件放在容器组件中的位置。）
 
 **注意：**当使用编程方式初始化一个widget时，务必调用startup方法，且必须在将该widget放置到文档DOM树中以后再调用。
 
 ### 销毁方法 ###
 除了初始化方法之外，dijit/_WidgetBase还定义了一些销毁方法（以调用顺序列出）：
 
-- `destroyRecursive`
-	- `destroyDescendants`
-	- `destroy`
-		- `uninitialize`
-		- `destroyRendering`
+- `destroyRecursive`：小部件销毁过程入口
+	- `destroyDescendants`：销毁小部件中嵌套的子小部件
+	- `destroy`：释放小部件本身的资源
+		- `uninitialize`：扩展点，用以释放自定义的资源
+		- `disconnect`：切断小部件中生成的“连接”（connections）
+		- `destroyRendering`：销毁小部件中的DOM节点
 
 在创建自己的widget时，任何必要的自定义销毁行为都必须定义在destroy方法中（别忘了调用this.inherited(arguments))。
 
@@ -75,7 +114,7 @@ _WidgetBase为Dojo的两个最重要的事件机制on()和subscribe()提供了�
 
 
 
-## _TemplateMixin ##
+## _TemplatedMixin ##
 使用`_TemplatedMixin`和`_WidgetsTemplateMixin`，你可以快速地创建高可维护性、快速修改和易于操作的widget。
 
 `_TemplatedMixin`的基本概念：可以让开发人员创建一个带有一些小扩展的小HTML文件，并在运行时（或在build过程中）将这个HTML文件当做字符串加载，提供给这个模板的widget的所有实例进行重复使用。
@@ -195,3 +234,5 @@ Dijit的模板系统还能用模板来创建更加复杂的widget。这个混合
 - [创建基于模板的widget](https://blog.csdn.net/taijiedi13/article/details/55252001)
 - [创建自定义Dojo小部件(Widget)](https://blog.csdn.net/dojotoolkit/article/details/6688058)
 - [扩展 Dojo dijits 来创建自定义小部件 - 扩展日历部件](https://blog.csdn.net/joyous/article/details/51456299)
+- [DOJO组件生命周期（the life cycle of dojo widget）](https://blog.csdn.net/quincylk/article/details/17613563)
+- [Dojo Widget 传入参数处理机制讨论](https://blog.csdn.net/eengel/article/details/6592879)
