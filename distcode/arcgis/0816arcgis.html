@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="http://localhost:8080/arcgis_js_api/library/3.24/3.24/dijit/themes/claro/claro.css">
+    <link rel="stylesheet" href="http://localhost:8080/arcgis_js_api/library/3.24/3.24/esri/css/esri.css">
+    <script src="http://localhost:8080/arcgis_js_api/library/3.24/3.24/init.js"></script>
+    <title>Document</title>
+    <style>
+        /* html, body, #mapDiv, .map.container {
+            height: 100%;
+            padding: 0;
+            margin: 0;
+        }
+        #legendDiv {
+            background-color: #fff;
+            position: absolute !important;
+            z-index: 99;
+            top: 10px;
+            right: 20px;
+        } */
+
+        html, body {
+            height: 100%;
+            width: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: "Helvetica";
+        }
+
+        #header {
+            background-color: #e8e8e8;
+            height: 65px;
+            margin: 5px 5px;
+        }
+
+        #mainWindow {
+            width: 100%;
+            height: 100%;
+        }
+
+        #title {
+            padding-top: 2px;
+            padding-left: 10px;
+            font-size: 18pt;
+            font-weight: 700;
+        }
+
+        #subtitle {
+            font-size: small;
+            padding-left: 40px;
+        }
+
+        #rightPane {
+            background-color: #e8e8e8;
+            margin: 5px;
+            width: 20%;
+        }
+
+        #map {
+            margin: 5px;
+            padding: 0;
+        }
+    </style>
+</head>
+<body class="claro">
+    <!-- <div id="mapDiv"></div>
+    <div id="viewDiv"></div> -->
+
+    <div id="mainWindow" data-dojo-type="dijit/layout/BorderContainer" data-dojo-props="design: 'headline'">
+        <div id="header" data-dojo-type="dijit/layout/ContentPane" data-dojo-props="region: 'top'">
+            <div id="title"></div>
+            <div id="subtitle"></div>
+        </div>
+        <div id="map" data-dojo-type="dijit/layout/ContentPane" data-dojo-props="region: 'center'"></div>
+        <div id="rightPane" data-dojo-type="dijit/layout/ContentPane" data-dojo-props="region: 'right'">
+            <div id="legend"></div>
+        </div>
+    </div>
+    <script>
+        /* require([
+            "esri/map",
+            "esri/arcgis/utils",
+            "esri/dijit/Legend",
+            "dojo/domReady!"
+        ], function(Map, arcgisUtils, Legend) {
+            arcgisUtils.createMap("1a40fa5cc1ab4569b79f45444d728067", "mapDiv").then(function(response) {
+                map = response.map;
+
+                var legend = new Legend({
+                    map: map,
+                    layerInfos: (arcgisUtils.getLegendLayers(response))
+                }, "legendDiv");
+
+                legend.startup();
+            }); */
+            /* map = new Map("map", {
+                basemap: "topo",
+                center: [-122.45, 37.75],
+                zoom: 13
+            }); */
+        // });
+
+        /* require([
+            "esri/map",
+            "esri/views/MapView",
+            "dojo/domReady!"
+        ], function(Map) {
+            var map = new Map("mapDiv", {
+                center: [-118, 34.5],
+                zoom: 8,
+                basemap: "topo"
+            });
+            var view = new MapView({
+                container: "viewDiv",
+                map: map,
+                zoom: 4,
+                center: [15,65]
+            });
+        }); */
+
+        require([
+            "dojo/parser",
+            "dojo/ready",
+            "dijit/layout/BorderContainer",
+            "dijit/layout/ContentPane",
+            "dojo/dom",
+            "esri/map",
+            "esri/urlUtils",
+            "esri/arcgis/utils",
+            "esri/dijit/Legend",
+            "esri/dijit/Scalebar",
+            "dojo/domReady!"
+        ], function (
+            parser,
+            ready,
+            BorderContainer,
+            ContentPane,
+            dom,
+            Map,
+            urlUtils,
+            arcgisUtils,
+            Legend,
+            Scalebar
+    ) {
+        ready(function () {
+            parser.parse();
+            arcgisUtils.createMap("4abe6a830b8f466dacf8abfde567a781", "map").then(function (response) {
+                dom.byId("title").innerHTML = response.itemInfo.item.title;
+                dom.byId("subtitle").innerHTML = response.itemInfo.item.snippet;
+                console.log(response);
+
+                var map = response.map;
+
+                var scalebar = new Scalebar({
+                    map: map,
+                    scalebarUnit: "english"
+                });
+
+                var legendLayers = arcgisUtils.getLegendLayers(response);
+                var legendDijit = new Legend({
+                    map: map,
+                    layerInfos: legendLayers
+                }, "legend");
+                legendDijit.startup();
+            });
+        });
+    });
+    </script>
+</body>
+</html>

@@ -40,6 +40,10 @@
 
 	![](https://i.imgur.com/UZ8MSZm.png)
 
+
+----------
+
+
 ### IIS部署 ###
 打开控制面板，点击【程序】→【启用或关闭Windows功能】，然后找到Internet信息服务，然后进行勾选。
 
@@ -74,6 +78,20 @@ FTP服务器和Web管理器全选和万维网服务中的安全性、常见HTTP�
 ![](https://i.imgur.com/AxnE7ie.png)
 
 
+----------
+### Tomcat部署 ###
+将arcgis_js_api放在webapps下，同样修改两个js文件
+
+修改后图片：
+
+dojo.js修改：
+
+![](https://i.imgur.com/EnfkBKB.png)
+
+init.js修改
+
+![](https://i.imgur.com/AzLthZ4.png)
+
 
 
 
@@ -90,8 +108,13 @@ FTP服务器和Web管理器全选和万维网服务中的安全性、常见HTTP�
 
 ## 基础入门 ##
 ### 地图 ###
-Map 是承载图层的容器，主要用于呈现地图服务、影像服务，此外还可以展示 WMS 服务等，一个
-图层只有被添加到 Map 中，才能被显示出来。
+Map 是承载图层的容器，主要用于呈现地图服务、影像服务，此外还可以展示 WMS 服务等，一个图层只有被添加到 Map 中，才能被显示出来。
+
+Map类包含储存、管理和覆盖2D3D视图共有图层的属性和方法。
+
+>basemap为加载的底图，可选值为：streets、satellite、hybrid、topo、gray、dark-gray、oceans、osm、national-geographic
+>
+>ground指定地图的表面属性，字符串"world-elevation"使用世界高程服务指定地面的一个实例。
 
 ### 图层 ###
 图层是承载服务的载体（GraphicsLayer 除外），ArcGIS for Server 将 GIS 资源作为服务发布出来，要
@@ -120,11 +143,31 @@ Geometry定义了对象的形状，Symbol定义了图形是如何显示的，Gra
 
 ### Render ###
 
+---
+
+## basemap ##
+底图图层属于一类地图图层，提供了一个可显示动态操作信息的框架。底图显示性能非常强大。由于底图图层相对稳定，不常发生变化，因此其显示只需计算一次，然后便可以多次重复使用。首次以特定的地图比例访问某个区域时，会对地图图层的显示进行计算。以后再以此地图比例访问该区域时，可调出显示。底图用于位置参考，并为用户提供叠加或聚合业务图层、执行任务以及可视化地理信息的框架。底图是执行所有后续操作和地图制图的基础，它为地理信息的使用提供了环境和框架。
+
+## center ##
+center：视图的中心点
+
+## container ##
+container：装载这个视图的容器
+
+## map ##
+map：视图渲染的Map对象的实例。
+
+## scale ##
+scale：视图中的地图比例尺
+
+## zoom ##
+zoom：视图中缩放比例。
+
 
 参考链接：
 
 - [OGC、WMS、WFS、WCS](https://blog.csdn.net/hi_kevin/article/details/34445911)
 - [【一】ArcGIS API for JavaScript之API的使用和部署](https://blog.csdn.net/yy284872497/article/details/78878435)
 - [Win10下Arcgis api for javascript的本地服务器（IIS）配置](https://blog.csdn.net/qq_36305327/article/details/56008464)
-
+- [arcgis api for js 3.25](https://developers.arcgis.com/javascript/3/jsapi/)
 

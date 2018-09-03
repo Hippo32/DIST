@@ -104,10 +104,11 @@ _WidgetBase为Dojo的两个最重要的事件机制on()和subscribe()提供了�
 
 - id：用于标识该widget的唯一字符串
 - lang：一个很少用到的字符串属性，用于覆盖默认的DOjo locale
-- dir：有Bidi需求时很有用
+- dir：有Bidi需求时很有用,"ltr" or "rtl"
 - class：widget的domNode的HTML class属性
 - style：widget的domNode的HTML style属性
 - title：通常是指原生的工具提示HTML title属性
+- tooltips：和上面的title属性合作，当title被当成tab name，...时，tooltip属性指的就是标准的HTML title属性
 - baseClass：widget的根CSS class
 - srcNodeRef：在widget被“控件化”之前存在的DOM节点（如果有的话）。注意对于某些widget（例如模板widget）这个属性将在postCreate后被重置，因为原有的节点已被丢弃了。
 
