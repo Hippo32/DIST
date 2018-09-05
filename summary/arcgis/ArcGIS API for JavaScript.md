@@ -170,4 +170,5 @@ zoom：视图中缩放比例。
 - [【一】ArcGIS API for JavaScript之API的使用和部署](https://blog.csdn.net/yy284872497/article/details/78878435)
 - [Win10下Arcgis api for javascript的本地服务器（IIS）配置](https://blog.csdn.net/qq_36305327/article/details/56008464)
 - [arcgis api for js 3.25](https://developers.arcgis.com/javascript/3/jsapi/)
+- [http://www.ibloger.net/category-37.html](http://www.ibloger.net/category-37.html)
 
