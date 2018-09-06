@@ -4,6 +4,10 @@
 1. 通过地图服务的URL创建一个`ArcGISDynamicMapServiceLayer`对象
 2. 将动态地图服务的对象添加到地图容器中
 
+`ArcGISDynamicMapServiceLayer`（动态地图服务）通常用于实时显示经常变化的数据，支持控制单个图层可见性，可动态投影。但缺点是显示效果较差，整个服务出图较慢。
+
+`ArcGISTiledMapServiceLayer`可以直接加载服务器端的缓存地图服务，显示效果好，速度快，但它的缺点正是`ArcGISDynamicMapServiceLayer`的优点，即不支持动态投影，不能控制图层可见性，服务端需要提前生成缓存等。
+
 示例代码：
 
 	<!DOCTYPE html>

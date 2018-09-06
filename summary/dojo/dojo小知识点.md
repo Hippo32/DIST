@@ -1,0 +1,2 @@
+# dojo小知识点 #
+- 使用on、topic.subscribe、aspect.before、aspect.after都会返回一个handler对象，该对象有个一个remove方法，在小部件中使用以上几个方法时，要使用this.own(handler)将事件的handler包起来，这样小部件在执行destroy的时候会自动执行handler.remove()，从而自动释放资源。或者也可以在模板文件中绑定事件，例如data-dojo-attach-event="click:_click"，这样小部件在销毁的时候也会自动释放资源。

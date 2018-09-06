@@ -32,6 +32,11 @@ Esri给我们提供了三个累用于实现矢量数据查询功能：`FindTask`
 
 查询的返回结果：返回的是一个FeatureSet。FeatureSet.featurns[i]可以加入到GraphicsLayer上显示，也可以通过Attributes属性字段得到属性信息。
 
+需要define的
+
+	"esri/tasks/query",
+	"esri/tasks/QueryTask"
+
 ### QueryTask实现空间查询 ###
 
 	function queryGraphic(geometry) {
