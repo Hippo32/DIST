@@ -55,6 +55,13 @@
 		"outline": <simpleLineSymbol>
 	}
 
+## esri/symbols/jsonUtils ##
+方法
+
+|-|-|
+|fromJson(JSON)|将输入json转换为符号，如果输入json表示未知或不支持的符号类型，则返回null。|
+|getShapeDescriptors(symbol)|返回由Dojo GFX API定义的给定符号的形状描述属性。|
+
 参考：
 
 - [https://wenku.baidu.com/view/12a0ff8d85868762caaedd3383c4bb4cf7ecb78e.html](https://wenku.baidu.com/view/12a0ff8d85868762caaedd3383c4bb4cf7ecb78e.html)
