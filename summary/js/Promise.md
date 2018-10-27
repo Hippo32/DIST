@@ -1,11 +1,6 @@
 # 关于Promise、异步和事件循环 #
 2018/7/30 and 2018/7/31 and 2018/8/1
 
-目标：
-
-- 理解Promise与异步编程
-- 学习Deferred
-
 promise可以使异步看起来如同步般清新易读，从而从回调地狱这种解脱出来。在未支持的浏览器中通过polyfill模拟实现。
 
 # Promise与异步编程 #
@@ -162,6 +157,16 @@ Promise链能从一个Promise传递数据给下一个Promise。传递给执行�
 由于静态方法被继承了，`MyPromise.resolve()`方法、`MyPromise.reject()`方法、`MyPromise.race()`方法与`MyPromise.all()`方法在派生的Promise上都可用。后两个方法的行为等同于内置的方法，但前两个方法则有轻微的不同。
 
 `MyPromise.resolve()`与`MyPromise.reject()`都会返回`MyPromise`的一个实例，无视传递进来的值的类型，这是由于这两个方法使用了`Symbol.species`属性来决定需要返回的Promise的类型。若传递内置Promise给这两个方法，将会被决议或被拒绝，并且会返回一个新的`MyPromise`，以便绑定完成或拒绝处理函数。
+
+## 参考资料 ##
+- [https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)
+- [开源 Promise 迷你书](http://liubin.org/promises-book/)
+- [We have a problem with promises](http://fex.baidu.com/blog/2015/07/we-have-a-problem-with-promises/)
+- [官方定义规范](https://promisesaplus.com/)
+- [Promise 必知必会（十道题](https://zhuanlan.zhihu.com/p/30797777)
+- [深入 Promise(一)——Promise 实现详解](https://zhuanlan.zhihu.com/p/25178630)
+- [深入 Promise(二)——进击的 Promise](https://zhuanlan.zhihu.com/p/251981784)
+- [深入 Promise(三)——命名 Promise](https://zhuanlan.zhihu.com/p/25199781)
 
 
 

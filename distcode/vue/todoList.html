@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<title>做一个简单的todo-list</title>
+<meta name="description" content="">
+<meta name="keywords" content="">
+<meta name='viewprot' content='width=device-width,minmum-scale=1.0,maxmum-scale=1.0'>
+<style>
+    body {
+        background: #ccc;
+    }
+    #app {
+        background-color: #fff;
+        width: 50%;
+        height: 50vw;
+        overflow-y: scroll;
+        margin: 40px auto;
+        padding: 10px;
+    }
+    .inputtodo {
+        display: block;
+        padding: 5px;
+        box-sizing: border-box;
+        width: 100%;
+        height: 30px;
+        font-size: 16px;
+    }
+    ul {
+        list-style: none;
+        padding: 0;
+        font-size: 16px;
+    }
+    li {
+        display: inline-block;
+    }
+    .selected {
+        text-decoration: line-through;
+        color: #ccc;
+    }
+</style>
+</head>
+<body>
+    <!-- 2018.10.25 -->
+    <div id='app'>
+        <h3>This is a symbol todo-list</h3>
+        <input class="inputtodo" type="text" v-model="inputValue.value" autofocus @keydown.enter="addtodo()">
+        <button @click="delall" v-if="list.length !== 0">删除全部</button>
+        <button @click="selall" v-if="list.length !== 0">勾选全部</button>
+        <ul v-for="(item, index) in list" :key="index">
+            <input v-model="item.pick" type="checkbox">
+            <li :class="{selected: item.pick}">{{item.value}}</li>
+            <button @click="deletetodo(index)">删除</button>
+        </ul>
+    </div>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/vue@2.5.17/dist/vue.js"></script>
+<script type="text/javascript">
+	var vm=new Vue({
+		el:'#app',
+        data: {
+            inputValue: {
+                value: '',
+                pick: false
+            },
+            list: []
+        },
+        methods: {
+            // 添加一条todo
+            addtodo() {
+                this.list.push(this.inputValue);
+                this.inputValue = {
+                    value: '',
+                    pick: false
+                };
+            },
+            // 删除一条todo
+            deletetodo(index) {
+                this.list.splice(index, 1);
+            },
+            // 删除所有
+            delall() {
+                this.list = [];
+            },
+            // 勾选所有
+            selall() {
+                this.list.forEach(element => {
+                    element.pick = true;
+                });
+            }
+        }
+	})
+    
+</script>
+</html>

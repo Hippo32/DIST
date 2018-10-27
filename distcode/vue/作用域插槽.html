@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.5.17/dist/vue.js"></script>
+</head>
+<body>
+    <div id="app">
+        <!-- <todo-list title="形状">
+            <div v-for="shape in shapes">
+                {{shape.name}}<small>({{shape.sides}}条边)</small>
+            </div>
+        </todo-list>
+        <todo-list title="颜色">
+            <div v-for="color in colors">
+                <div class="colorbox" :style="{background: color.hex}">{{color.name}}</div>
+            </div>
+        </todo-list> -->
+
+        <todo-list title="形状" :items='shapes'>
+            <div slot-scope="shape">{{shape.name}}<small>({{shape.sides}}条边)</small></div>
+        </todo-list>
+        <todo-list title="颜色" :items="colors">
+            <div slot-scope="color"><div class="colorbox" :style="{background: color.hex}">{{color.name}}</div></div>
+        </todo-list>
+
+        <girl :favorite-a="items">
+            <template slot="cute" slot-scope="variable">
+                <li style="padding: 8px 2px;">{{variable.thing}}</li>
+            </template>
+        </girl>
+    </div>
+    <script>
+        Vue.component('todo-list', {
+            props: ["title", "items"],
+            template: `
+                <div class="todo-list">
+                    <h3 class="title">{{ title }}</h3>
+                    <div class="list">
+                        <slot v-bind="item" v-for="item in items"></slot>
+                    </div>
+                </div>
+            `
+        })
+
+        Vue.component('girl', {
+            props: ['favorite-a'],
+            template: `
+                <ul>
+                    <slot name="cute"
+                          v-for="dos in favoriteA"
+                          :thing="dos.what">
+                    </slot>
+                </ul>
+            `
+
+        })
+        var vm = new Vue({
+            el: "#app",
+            data: {
+                shapes: [
+                    { name: '正方形', sides: 4 },
+                    { name: '六边形', sides: 6 },
+                    { name: '三角形', sides: 3 }
+                ],
+                colors: [
+                    { name: '黄色', hex: '#f4d03f'},
+                    { name: '绿色', hex: '#229954'},
+                    { name: '紫色', hex: '#9b59b6'}
+                ],
+                items: [
+                    { what: '逛' },
+                    { what: '吃' },
+                    { what: '打扮' },
+                    { what: '逛' },
+                    { what: '吃' },
+                    { what: '打扮' },
+                    { what: '逛' },
+                    { what: '吃' },
+                    { what: '打扮' }
+                ]
+            }
+        })
+    </script>
+</body>
+</html>
