@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>登录注册</title>
+    <style>
+        body {
+            background: antiquewhite;
+        }
+        #app {
+            height: 350px;
+            width: 300px;
+            background-color: #fff;
+            margin: 300px auto;
+        }
+        .tabWrapper {
+            display: flex;
+            height: 50px;
+            justify-content: center;
+        }
+        .tab {
+            flex: 1 1 auto;
+            text-align: center;
+            line-height: 50px;
+            /* height: 50px; */
+        }
+        .tab:hover {
+            background-color: rgb(208, 245, 204);
+        }
+        .active {
+            background-color: rgb(178, 238, 170);
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <div class="tabWrapper">
+            <div v-for="(tab, index) in tabs"
+                :key="index"
+                :class="['tab', {active: currentTab == tab.yw}]"
+                @click="changeTab(tab.yw)">{{ tab.zw }}
+           </div>
+        </div>
+        
+        <component :is="currentComponent"></component>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.5.17/dist/vue.js"></script>
+    <script>
+        Vue.component('tab-signin', {
+            template: `<div`
+        })
+        Vue.component('tab-regist', {
+            template: `<p>regist</p>`
+        })
+        var vm = new Vue({
+            el: '#app',
+            data: {
+                tabs: [
+                    {
+                        zw: "登录",
+                        yw: "signin"
+                    },
+                    {
+                        zw: "注册",
+                        yw: "regist"
+                    }
+                ],
+                currentTab: "signin"
+            },
+            computed: {
+                currentComponent: function() {
+                    console.log(this.currentTab);
+                    return "tab-" + this.currentTab;
+                }
+            },
+            methods: {
+                changeTab(index) {
+                    this.currentTab = index;
+                }
+            }
+        })
+    </script>
+</body>
+</html>
