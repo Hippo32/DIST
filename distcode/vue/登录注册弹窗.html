@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        /* 动画效果 */
+        .fade-enter-active, .fade-leave-active {
+            transition: opacity .5s;
+        }
+        .fade-enter, .fade-leave-to {
+            opacity: 0;
+        }
+        
+        /* 遮盖层 */
+        .model-back {
+            position: fixed;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            background-color: rgba(0, 0, 0, .3);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        /* 弹框样式 */
+        .model {
+            background: #fff;
+        }
+        /* 登录注册标签样式 */
+        .tab {
+            display: flex;
+            width: 150px;
+            line-height: 30px;
+            font-size: 20px;
+            justify-content: center;
+            color: #666;
+        }
+        p {
+            margin: 0;
+        }
+        .x {
+            width: 100%;
+            height: 30px;
+            font-size: 20px;
+            color: #eee;
+            text-align: right;
+            padding-right: 10px;
+        }
+
+        .lf{
+            float: left;
+        }
+
+        .active {
+            border-bottom: 2px solid #00cc99;
+        }
+
+        .model-header, .module-body {
+            padding: 0 10px;
+            display: flex;
+            border: 1px solid #eee;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <button @click="showLoginbox">点我！即可登录/注册</button>
+        <login-register v-if="isVisible" @click="hide">
+            <div slot="header" class="clearfix">
+                <p class="x" @click="hide">X</p>
+                <span 
+                    v-for="labelspan in labelspans"
+                    :key="labelspan" 
+                    :class="['tab', 'lf', {active: currentSpan === labelspan}]"
+                    @click="changeSpan(labelspan)">{{labelspan}}</span>
+            </div>
+            <div slot="body">
+                <div id="register-user">
+                    <p>
+                        <label>用户名</label>
+                        <input type="text" placeholder="请输入用户名" class="enter" autofocus />
+                    </p>
+                    <p>
+                        <label>密码</label>
+                        <input type="password" placeholder="请输入密码" class="enter" />
+                    </p>
+                </div>
+            </div>
+        </login-register>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.5.17/dist/vue.js"></script>
+    <script>
+        Vue.component('login-register', {
+            template: `
+                <transition name="fade">
+                    <div class="model-back">
+                        <div class="model">
+                            <div class="model-header">
+                                <slot name="header">
+                                    <h2>我是弹框的标题</h2>
+                                    <p class="btn-class" @click="hide">X</p>
+                                </slot>
+                            </div>
+                            <div class="model-body">
+                                <slot name="body">
+                                    我是弹框的body
+                                </slot>
+                            </div>
+                            <div class="model-footer">
+                                <slot name="footer">
+                                    我是弹框的footer
+                                </slot>
+                            </div>
+                        </div>
+                    </div>
+                </transition>
+            `,
+            methods: {
+                hide() {
+                    this.$emit('click');
+                }
+            }
+        })
+        var vm = new Vue({
+            el: '#app',
+            data: {
+                isVisible: false,
+                labelspans: ["登录", "注册"],
+                currentSpan: ''
+            },
+            methods: {
+                showLoginbox() {
+                    this.isVisible = true;
+                },
+                hide() {
+                    this.isVisible = false;
+                },
+                changeSpan(labelspan) {
+                    this.currentSpan = labelspan;
+                }
+            }
+        })
+    </script>
+</body>
+</html>

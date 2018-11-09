@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        // Reflect.get()的用法
+        /* var myObject = {
+            foo: 1,
+            bar: 2, 
+            get baz() {
+                return this.foo + this.bar
+            },
+        }
+        var myReceiverObject = {
+            // foo: ,
+            bar: 4
+        }; */
+        // console.log(Reflect.get(myObject, 'baz', myReceiverObject))
+        
+        /* var myObject = {
+            foo: 4,
+            set bar(value) {
+                return this.foo = value;
+            }
+        };
+        var myReceiverObject = {
+            foo: 0,
+        };
+        Reflect.set(myObject, 'bar', 1, myReceiverObject);
+        console.log(myObject.foo)
+        console.log(myReceiverObject.foo) */
+
+        // Reflect.set()的用法
+        /* let p = {
+            a: 'a'
+        };
+        let handler = {
+            set(target, key, value, receiver) {
+                console.log('set');
+                Reflect.set(target, key, value)
+            },
+            defineProperty(target, key, attribute) {
+                console.log('defineProperty');
+                Reflect.defineProperty(target, key, attribute);
+            }
+        };
+        let obj = new Proxy(p, handler);
+        obj.a = 'A'; */
+
+        // Reflect.has(obj, name)
+        /* var myObject = {
+            foo: 1
+        };
+        Reflect.has(myObject, 'foo') // foo */
+
+        // Reflect.deleteProperty(obj, name)
+        /* const myObj = { foo: 'bar' };
+        Reflect.deleteProperty(myObj, 'foo'); */
+
+        // Reflect.construct(target, args)
+        // 等同于new target(...args)
+        /* function Greeting(name) {
+            this.name = name;
+        }
+        const instance = Reflect.construct(Greeting, ['张三']); */
+
+        // Reflect.getPrototypeOf(obj) 用于读取对象的__proto__属性
+        /* function FancyThing() {
+            console.log("hello")
+        }
+        const myObj = new FancyThing();
+        Reflect.getPrototypeOf(myObj) === FancyThing.prototype; */
+
+        // Reflect.setPrototypeOf(obj, newProto) 用于设置目标对象的原型
+        /* const myObj = {};
+        Reflect.setPrototypeOf(myObj, Array.prototype);
+        console.log(myObj.length); */
+
+        // Reflect.apply(func, thisArg, args)
+        // 等同于Function.prototype.apply.call(func, thisArg, args)
+        const ages = [11, 33, 12, 54, 18, 96];
+        const youngest = Reflect.apply(Math.min, Math, ages);
+        const oldest = Reflect.apply(Math.max, Math, ages);
+        const type = Reflect.apply(Object.prototype.toString, youngest, []);
+        
+        // Reflect.defineProperty(target, propertyKey, arrributes)
+        /* function MyDate() {
+
+        }
+        Reflect.defineProperty(MyDate, 'now', {
+            value: () => Date.now()
+        }) */
+        /* const p = new Proxy({}, {
+            defineProperty(target, prop, descriptor) {
+                console.log(descriptor);
+                return Reflect.defineProperty(target, prop, descriptor);
+            }
+        });
+        p.foo = 'bar' */
+
+        // Reflect.getOwnPropertyDescriptor(target, propertyKey)
+        // 用于得到指定属性的描述对象
+        /* var myObject = {};
+        Object.defineProperty(myObject, 'hidden', {
+            value: true,
+            enumerable: false
+        });
+        var theDescriptor = Reflect.getOwnPropertyDescriptor(myObject, 'hidden') */
+
+        // Reflect.isExtensible(target)
+        // 表示当前对象是否可扩展
+        /* const myObject = {};
+        console.log(Reflect.isExtensible(myObject)); */
+
+        // Reflect.preventExtensions(target)
+        // 用于让一个对象变为不可扩展
+        /* var myObject = {};
+        Reflect.preventExtensions(myObject); */
+
+        // Reflect.ownKeys(target)
+        // 用于返回对象的所有属性
+        /* var myObject = {
+            foo: 1,
+            bar: 2,
+            [Symbol.for('baz')]: 3,
+            [Symbol.for('bing')]: 4
+        };
+        console.log(Reflect.ownKeys(myObject)); //["foo", "bar", Symbol(baz), Symbol(bing)] */
+
+        const person = observable({
+            name: '张三',
+            age: 20
+        });
+        function print() {
+            console.log(`${person.name}, ${person.age}`)
+        }
+        observe(print);
+        
+    </script>
+</body>
+</html>
